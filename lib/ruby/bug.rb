@@ -28,26 +28,24 @@ class Bug
 
     @position_vec = Vector.new(x, y) # A non-normalized vector holding X,Y position
 
-    @course            = course
-    @speed             = speed
-    @mass              = mass
-    @maneuverability   = maneuverability
-    @max_turn          = max_turn
-    @min_speed         = min_speed
-    @max_speed         = max_speed
+    @course          = course
+    @speed           = speed
+    @mass            = mass
+    @maneuverability = maneuverability
+    @max_turn        = max_turn
+    @min_speed       = min_speed
+    @max_speed       = max_speed
 
     @steering_target   = Vector.new(0, 1.0) # relative to me; i.e. straight ahead
 
-    @velocity_vec = Vector.new # A non-normalized vector implying heading AND speed. No 'skidding'
+    # We could, in theory, handle 'pointing in one direction while moving in another.'
+    # (Think of the spaceship in _Asteroids_.) In this simulation we don't bother,
+    # but we support such capability.
+    @velocity_vec = Vector.new # A non-normalized vector implying direction AND speed.
     @heading_vec  = Vector.new # A normalized vector for pure heading information
 
     calculate_vectors
   end
-
-  # def course=(degrees)
-  #   @course = degrees
-  #   calculate_vectors
-  # end
 
   def velocity_vec=(new_vec)
     @velocity_vec = new_vec

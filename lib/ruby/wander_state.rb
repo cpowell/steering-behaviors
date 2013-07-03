@@ -53,7 +53,7 @@ class WanderState < BasicGameState
   def update(container, game, delta)
     delta_s = delta / 1000.0
 
-    steering_force = @bug.wander(0.5)
+    steering_force = @bug.wander(0.4)
 
     @bug.feel_the_force(steering_force, delta_s)
     @bug.move(delta_s)
@@ -77,6 +77,8 @@ class WanderState < BasicGameState
     @steering_target.setCenterY steering_force.y * VISUAL_SCALE + @bug.position_vec.y
 
     @steering_force.set @bug.position_vec.x, @bug.position_vec.y, @steering_target.getCenterX, @steering_target.getCenterY
+
+    # printf "Crs: %0.4f  Hdg: %0.4f  Spd: %0.1f\n", @bug.velocity_vec.radians, @bug.heading_vec.radians, @bug.speed
   end
 
   # After that the render method allows us to draw the world we designed
