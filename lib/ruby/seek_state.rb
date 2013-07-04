@@ -30,10 +30,10 @@ class SeekState < BasicGameState
   def init(container, game)
     @container = container
 
-    @bug = Bug.new(100, 100, 135, 100, 0.1, 10, 0.7854, 50, 150)
+    @bug = Bug.new(MAX_X/8, MAX_Y/8, 135, 100, 0.1, 10, 0.7854, 50, 150)
     @bug_img = Circle.new(@bug.position_vec.x, @bug.position_vec.y, 5)
 
-    @target = Vector.new(rand(400..800), rand(400..800))
+    @target = Vector.new(rand(MAX_X/2..MAX_X), rand(MAX_Y/2..MAX_Y))
     @tgt_img = Circle.new(@target.x, @target.y, 5)
 
     # Visual artifacts to illustrate what's going on...
@@ -80,7 +80,7 @@ class SeekState < BasicGameState
       (steering_force.y + @bug.position_vec.y)
 
     if (@target.x - @bug.position_vec.x).abs < 10 && (@target.y - @bug.position_vec.y).abs < 10
-      @target = Vector.new(rand(0..800), rand(0..800))
+      @target = Vector.new(rand(0..MAX_X), rand(0..MAX_Y))
       @tgt_img = Circle.new(@target.x, @target.y, 5)
     end
 
