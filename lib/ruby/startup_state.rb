@@ -49,6 +49,7 @@ class StartupState < BasicGameState
     graphics.draw_string("Steering behaviors demo (ESC to exit)", 8, container.height - 30)
     graphics.setColor(Color.red)
     graphics.draw_string("(Type 'w' to wander)", 8, container.height - 200)
+    graphics.draw_string("(Type 's' to seek)", 8, container.height - 230)
   end
 
   # Notification that a key was released
@@ -60,6 +61,8 @@ class StartupState < BasicGameState
   def keyReleased(key, char)
     if key==Input::KEY_W
       @game.enterState(WanderState::ID, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
+    elsif key==Input::KEY_S
+      @game.enterState(SeekState::ID, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
     elsif key==Input::KEY_ESCAPE
       @container.exit
     end

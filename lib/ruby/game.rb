@@ -8,6 +8,7 @@
 
 require 'startup_state'
 require 'wander_state'
+require 'seek_state'
 
 class Game < StateBasedGame
   def initialize(name)
@@ -38,8 +39,7 @@ class Game < StateBasedGame
     # The order you add them is important; starting state must be first.
     addState StartupState.new
     addState WanderState.new
-
-    # Add other states here...
+    addState SeekState.new
   end
 end
 

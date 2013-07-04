@@ -14,6 +14,19 @@ module SteeringBehaviors
     self.steering_target.rotate(self.heading_vec.radians)
   end
 
+  # Seek a specific position; unlike 'arrive', will not slow down to stop at that pos.
+  # See http://www.red3d.com/cwr/steer/
+  #
+  # * *Args*    :
+  #   - +target_position_vector+ -> the position-vector where we want to go
+  # * *Returns* :
+  #   - the calculated steering force
+  #
+  def seek(target_position_vector)
+    best_velocity_to_target = (target_position_vector - self.position_vec).normalize * self.max_speed
+    best_velocity_to_target - self.velocity_vec
+  end
+
   # Given a steering force vector, alter course and velocity accordingly.
   # Takes turn rate limitations, mass, and other limits into account, and
   # directly alters the provided Mobile component.
