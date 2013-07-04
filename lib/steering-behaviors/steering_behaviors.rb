@@ -27,6 +27,19 @@ module SteeringBehaviors
     best_velocity_to_target - self.velocity_vec
   end
 
+  # Flee a specific position via the best possible route.
+  # See http://www.red3d.com/cwr/steer/
+  #
+  # * *Args*    :
+  #   - +target_position_vector+ -> the position-vector where we want to go
+  # * *Returns* :
+  #   - the calculated steering force
+  #
+  def flee(target_position_vector)
+    best_velocity_to_target = (self.position_vec - target_position_vector).normalize * self.max_speed
+    best_velocity_to_target - self.velocity_vec
+  end
+
   # Given a steering force vector, alter course and velocity accordingly.
   # Takes turn rate limitations, mass, and other limits into account, and
   # directly alters the provided Mobile component.

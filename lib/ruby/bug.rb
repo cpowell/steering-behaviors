@@ -62,6 +62,11 @@ class Bug
     end
   end
 
+  def course=(degrees)
+    @course = degrees
+    calculate_vectors
+  end
+
   def speed=(mps)
     @speed = mps
     calculate_vectors
