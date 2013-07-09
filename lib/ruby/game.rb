@@ -10,6 +10,7 @@ require 'startup_state'
 require 'wander_state'
 require 'seek_state'
 require 'flee_state'
+require 'pursue_state'
 
 class Game < StateBasedGame
   def initialize(name)
@@ -42,6 +43,7 @@ class Game < StateBasedGame
     addState WanderState.new
     addState SeekState.new
     addState FleeState.new
+    addState PursueState.new
   end
 end
 

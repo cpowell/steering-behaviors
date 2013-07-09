@@ -40,6 +40,81 @@ module SteeringBehaviors
     best_velocity_to_target - self.velocity_vec
   end
 
+  # Pursue a moving target by anticipating its future position. Calculates where it thinks
+  # the target will be, and leverages 'seek' to calculate how to get there.
+  # See http://www.red3d.com/cwr/steer/
+  #
+  # * *Args*    :
+  #   - +ipos+ -> the "interceptor"'s Position component
+  #   - +imob+ -> the "interceptor"'s Mobile component
+  #   - +qpos+ -> the "quarry"'s Position component
+  #   - +qmob+ -> the "quarry"'s Mobile componeont
+  # * *Returns* :
+  #   - the calculated steering force
+  #
+  def pursue(target_position_vec, target_velocity_vec)
+    offset          = target_position_vec - self.position_vec # relative (dx, dy) vector to quarry
+    direct_distance = offset.length
+    unit_offset     = offset / direct_distance
+
+    parallelness = self.heading_vec.dot(target_velocity_vec.normalize)
+    forwardness  = unit_offset.dot(self.heading_vec)
+
+    f = interval_comparison(forwardness,  -0.707, 0.707)
+    p = interval_comparison(parallelness, -0.707, 0.707)
+
+    # Break the pursuit into nine cases, the cross product of the
+    # quarry being [ahead, aside, or behind] us and heading
+    # [parallel, perpendicular, or anti-parallel] to us.
+    case f
+    when 1
+      case p
+      when 1
+        gen="ahead, parallel"
+        tf = 1.8
+      when 0
+        gen="ahead, perpendicular"
+        tf = 1.35
+      when -1
+        gen="ahead, anti-parallel"
+        tf = 1.10
+      end
+    when 0
+      case p
+      when 1
+        gen="aside, parallel"
+        tf = 1.20
+      when 0
+        gen="aside, perpedicular"
+        tf = 1.20
+      when -1
+        gen="aside, anti-parallel"
+        tf = 1.20
+      end
+    when -1
+      case p
+      when 1
+        gen="behind, parallel"
+        tf = 1.20
+      when 0
+        gen="behind, perpendicular"
+        tf = 1.20
+      when -1
+        gen="behind, anti-parallel"
+        tf = 1.20
+      end
+    end
+
+    direct_travel_time     = direct_distance / self.speed
+    direct_travel_time_2   = direct_distance / (self.speed + target_velocity_vec.length)
+    estimated_time_enroute = direct_travel_time_2 * tf
+
+    # printf "#{ipos.entity}'s target #{qpos.entity} is '#{gen}'. fness: %0.3f pness: %0.3f f: %0.3f p: %0.3f tf: %0.3f\n", forwardness, parallelness, f, p, tf
+    predicted_pos_vec = target_position_vec + (target_velocity_vec * estimated_time_enroute)
+
+    return [predicted_pos_vec, seek(predicted_pos_vec)]
+  end
+
   # Given a steering force vector, alter course and velocity accordingly.
   # Takes turn rate limitations, mass, and other limits into account, and
   # directly alters the provided Mobile component.
@@ -70,5 +145,15 @@ module SteeringBehaviors
     else
       self.velocity_vec = proposed_velocity_vec
     end
+  end
+
+
+  #=============================================================
+  private
+
+  def interval_comparison(x, lower_bound, upper_bound)
+    return -1 if x < lower_bound
+    return 1 if x > upper_bound
+    return 0
   end
 end

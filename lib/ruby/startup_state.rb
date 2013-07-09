@@ -51,6 +51,7 @@ class StartupState < BasicGameState
     graphics.draw_string("(Type 'w' to wander)", 8, container.height - 200)
     graphics.draw_string("(Type 's' to seek)", 8, container.height - 220)
     graphics.draw_string("(Type 'f' to flee)", 8, container.height - 240)
+    graphics.draw_string("(Type 'p' to pursue)", 8, container.height - 260)
   end
 
   # Notification that a key was released
@@ -66,6 +67,8 @@ class StartupState < BasicGameState
       @game.enterState(SeekState::ID, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
     elsif key==Input::KEY_F
       @game.enterState(FleeState::ID, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
+    elsif key==Input::KEY_P
+      @game.enterState(PursueState::ID, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
     elsif key==Input::KEY_ESCAPE
       @container.exit
     end
