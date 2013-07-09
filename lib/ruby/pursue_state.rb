@@ -10,7 +10,7 @@ require 'vector'
 require 'bug'
 
 class PursueState < BasicGameState
-  ID = 4 # Unique ID for this Slick game state
+  ID = 5 # Unique ID for this Slick game state
 
   VISUAL_SCALE = 50
   MAX_X = 800
@@ -110,7 +110,7 @@ class PursueState < BasicGameState
   def render(container, game, g)
     # Make sure you "layer" things in here from bottom to top...
     # @bg_image.draw(0, 0)
-    g.draw_string("Wandering (p to pause, ESC to exit)", 8, container.height - 30)
+    g.draw_string("Pursuing (p to pause, ESC to exit)", 8, container.height - 30)
 
     g.setColor(Color.green)
     g.draw(@bug_img)

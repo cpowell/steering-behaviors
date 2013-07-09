@@ -100,7 +100,7 @@ class SeekState < BasicGameState
     # Make sure you "layer" things in here from bottom to top...
     # @bg_image.draw(0, 0)
 
-    g.draw_string("Wandering (p to pause, ESC to exit)", 8, container.height - 30)
+    g.draw_string("Seeking (p to pause, ESC to exit)", 8, container.height - 30)
 
     g.setColor(Color.green)
     g.draw(@bug_img)
