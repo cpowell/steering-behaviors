@@ -18,12 +18,12 @@ module SteeringBehaviors
   # See http://www.red3d.com/cwr/steer/
   #
   # * *Args*    :
-  #   - +target_position_vector+ -> the position-vector where we want to go
+  #   - +goal_position+ -> the position-vector where we want to go
   # * *Returns* :
   #   - the calculated steering force
   #
-  def seek(target_position_vector)
-    desired_velocity = (target_position_vector - self.position_vec).normalize * self.max_speed
+  def seek(goal_position)
+    desired_velocity = (goal_position - self.position_vec).normalize * self.max_speed
     desired_velocity - self.velocity_vec
   end
 
@@ -37,8 +37,8 @@ module SteeringBehaviors
   # * *Raises* :
   #   - ++ ->
   #
-  def arrive(target_position_vector, gentleness=0.8)
-    to_target = target_position_vector - self.position_vec
+  def arrive(goal_position, gentleness=0.8)
+    to_target = goal_position - self.position_vec
     dist = to_target.length
 
     if dist > 0
@@ -56,12 +56,12 @@ module SteeringBehaviors
   # See http://www.red3d.com/cwr/steer/
   #
   # * *Args*    :
-  #   - +target_position_vector+ -> the position-vector where we want to go
+  #   - +flee_position+ -> the position-vector that we want to flee from
   # * *Returns* :
   #   - the calculated steering force
   #
-  def flee(target_position_vector)
-    best_velocity_to_target = (self.position_vec - target_position_vector).normalize * self.max_speed
+  def flee(flee_position)
+    best_velocity_to_target = (self.position_vec - flee_position).normalize * self.max_speed
     best_velocity_to_target - self.velocity_vec
   end
 
@@ -70,10 +70,7 @@ module SteeringBehaviors
   # See http://www.red3d.com/cwr/steer/
   #
   # * *Args*    :
-  #   - +ipos+ -> the "interceptor"'s Position component
-  #   - +imob+ -> the "interceptor"'s Mobile component
-  #   - +qpos+ -> the "quarry"'s Position component
-  #   - +qmob+ -> the "quarry"'s Mobile componeont
+  #
   # * *Returns* :
   #   - the calculated steering force
   #
