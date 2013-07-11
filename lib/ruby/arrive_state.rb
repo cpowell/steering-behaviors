@@ -9,8 +9,8 @@
 require 'vector'
 require 'bug'
 
-class SeekState < BasicGameState
-  ID = 3 # Unique ID for this Slick game state
+class ArriveState < BasicGameState
+  ID = 6 # Unique ID for this Slick game state
 
   VISUAL_SCALE = 50
   MAX_X = 800
@@ -30,7 +30,7 @@ class SeekState < BasicGameState
   def init(container, game)
     @container = container
 
-    @bug = Bug.new(MAX_X/8, MAX_Y/8, 135, 100, 0.1, 10, 1.7854, 50, 150)
+    @bug = Bug.new(MAX_X/8, MAX_Y/8, 135, 100, 0.1, 10, 1.7854, 0, 150)
     @bug_img = Circle.new(@bug.position_vec.x, @bug.position_vec.y, 5)
 
     randomize_target
@@ -55,7 +55,7 @@ class SeekState < BasicGameState
   def update(container, game, delta)
     delta_s = delta / 1000.0
 
-    steering_force = @bug.seek(@target_pos)
+    steering_force = @bug.arrive(@target_pos)
 
     @bug.feel_the_force(steering_force, delta_s)
     @bug.move(delta_s)
@@ -101,7 +101,7 @@ class SeekState < BasicGameState
     # @bg_image.draw(0, 0)
 
     g.setColor(Color.white)
-    g.draw_string("Seeking (r to randomize target, p to pause, ESC to exit)", 8, container.height - 30)
+    g.draw_string("Arriving (r to randomize target, p to pause, ESC to exit)", 8, container.height - 30)
 
     g.setColor(Color.green)
     g.draw(@bug_img)
@@ -137,6 +137,6 @@ class SeekState < BasicGameState
   end
 
   def randomize_target
-    @target_pos = Vector.new(rand(0..MAX_X), rand(0..MAX_Y))
+    @target_pos = Vector.new(rand(MAX_X/2..MAX_X), rand(MAX_Y/2..MAX_Y))
   end
 end

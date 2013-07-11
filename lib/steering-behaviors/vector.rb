@@ -1,24 +1,19 @@
 class Vector
+  Y_DOWN_MORE_POSITIVE = true
+
   attr_reader :x, :y
 
   def initialize(x=0,y=0)
-    clear_memo
     @x = x.to_f
     @y = y.to_f
   end
 
   def x=(x)
-    clear_memo
     @x = x.to_f
   end
 
   def y=(y)
-    clear_memo
     @y = y.to_f
-  end
-
-  def clear_memo
-    @length = nil
   end
 
   def length
@@ -47,7 +42,6 @@ class Vector
     @x /= length
     @y /= length
 
-    clear_memo
   end
 
   def normalize
@@ -67,7 +61,11 @@ class Vector
   end
 
   def dot(vector)
-    @x*vector.x + @y*vector.y
+    val = @x*vector.x + @y*vector.y
+    val = 1.0 if val > 1.0
+    val = -1.0 if val < -1.0
+
+    val
   end
 
   def perpendicular
@@ -75,7 +73,12 @@ class Vector
   end
 
   def compass_bearing
-    up = Vector.new(0, -1)
+    if Y_DOWN_MORE_POSITIVE
+      up = Vector.new(0, -1)
+    else
+      up = Vector.new(0, 1)
+    end
+
     theta = Math.acos(self.normalize.dot(up))
 
     theta *= -1 if @x < 0
@@ -127,9 +130,9 @@ class Vector
 
   def self.sign(v1, v2)
     if v1.y * v2.x > v1.x*v2.y
-      return -1
+      return -1 # anti-clockwise
     else
-      return 1
+      return 1 # clockwise
     end
   end
 

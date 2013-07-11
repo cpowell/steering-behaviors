@@ -11,6 +11,7 @@ require 'wander_state'
 require 'seek_state'
 require 'flee_state'
 require 'pursue_state'
+require 'arrive_state'
 
 class Game < StateBasedGame
   def initialize(name)
@@ -44,6 +45,7 @@ class Game < StateBasedGame
     addState SeekState.new
     addState FleeState.new
     addState PursueState.new
+    addState ArriveState.new
   end
 end
 

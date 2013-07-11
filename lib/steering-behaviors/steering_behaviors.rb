@@ -23,8 +23,33 @@ module SteeringBehaviors
   #   - the calculated steering force
   #
   def seek(target_position_vector)
-    best_velocity_to_target = (target_position_vector - self.position_vec).normalize * self.max_speed
-    best_velocity_to_target - self.velocity_vec
+    desired_velocity = (target_position_vector - self.position_vec).normalize * self.max_speed
+    desired_velocity - self.velocity_vec
+  end
+
+  #
+  #
+  # * *Args*    :
+  #   - ++ ->
+  #   - +gentleness+ -> higher values will make the arrival more gradual and 'gentle'
+  # * *Returns* :
+  #   -
+  # * *Raises* :
+  #   - ++ ->
+  #
+  def arrive(target_position_vector, gentleness=0.8)
+    to_target = target_position_vector - self.position_vec
+    dist = to_target.length
+
+    if dist > 0
+      desired_speed = dist / gentleness
+      desired_speed = [desired_speed, self.max_speed].min
+
+      desired_velocity = to_target.normalize * desired_speed
+      return desired_velocity - self.velocity_vec
+    else
+      return Vector.new(0,0)
+    end
   end
 
   # Flee a specific position via the best possible route.
@@ -124,26 +149,34 @@ module SteeringBehaviors
   #   - +delta+ -> time delta (in seconds) used for scaling the result
   #
   def feel_the_force(steering_force, delta) #, mobile, position)
-    max_course_change = self.max_turn * delta # radians per sec
-
     acceleration = steering_force / self.mass
 
     # Compute the new, proposed velocity vector.
-    proposed_velocity_vec = self.velocity_vec + (acceleration * delta) * self.maneuverability
+    desired_velocity = self.velocity_vec + (acceleration * delta)
+    desired_velocity.truncate!(self.max_speed)
 
     # If this timeslice's proposed velocity-vector exceeds the turn rate,
     # come up with a revised velociy-vec that doesn't exceed the rate -- and use that.
-    course_change = Math.acos(self.heading_vec.dot(proposed_velocity_vec.normalize))
+    angle             = Math.acos self.heading_vec.dot(desired_velocity.normalize)
+    max_course_change = self.max_turn * delta
 
-    if course_change.abs > max_course_change
-      direction    = Vector.sign(self.velocity_vec, proposed_velocity_vec) # 1==CCW, -1==CW
+    if angle.abs > max_course_change
+      direction    = Vector.sign(self.velocity_vec, desired_velocity) # -1==CCW, 1==CW
       limited_crse = self.heading_vec.radians - max_course_change * direction
 
-      self.velocity_vec = Vector.new(Math.sin(limited_crse) * proposed_velocity_vec.length, Math.cos(limited_crse) * proposed_velocity_vec.length)
+      self.velocity_vec = Vector.new(
+        Math.sin(limited_crse) * desired_velocity.length,
+        Math.cos(limited_crse) * desired_velocity.length
+      )
 
-      # printf "Desired course change %0.4f %s exceeds %0.4f allowable. Curr course [%0.4f], desired course [%0.4f], limited course [%0.4f]\n", course_change, (direction==-1 ? 'clockwise' : 'counter-clockwise'), max_course_change, self.heading_vec.radians, proposed_velocity_vec.radians, limited_crse
+      printf "Desired course change %0.4f %s exceeds %0.4f allowable. Desired course [%0.4f], limited course [%0.4f]\n",
+        angle,
+        (direction==1 ? 'clockwise' : 'counter-clockwise'),
+        max_course_change,
+        desired_velocity.radians,
+        limited_crse
     else
-      self.velocity_vec = proposed_velocity_vec
+      self.velocity_vec = desired_velocity
     end
   end
 
