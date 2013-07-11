@@ -45,7 +45,7 @@ class Bug
     @velocity_vec = new_vec
     @velocity_vec.truncate!(@max_speed)
 
-    @course      = @velocity_vec.compass_bearing
+    @course      = @velocity_vec.compass_bearing(true)
     @heading_vec = @velocity_vec.normalize
 
     if @velocity_vec.length < @min_speed

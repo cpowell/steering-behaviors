@@ -1,6 +1,4 @@
 class Vector
-  Y_DOWN_MORE_POSITIVE = true
-
   attr_reader :x, :y
 
   def initialize(x=0,y=0)
@@ -41,7 +39,6 @@ class Vector
 
     @x /= length
     @y /= length
-
   end
 
   def normalize
@@ -72,8 +69,8 @@ class Vector
     Vector.new(@y, -@x)
   end
 
-  def compass_bearing
-    if Y_DOWN_MORE_POSITIVE
+  def compass_bearing(y_down_more_positive=false)
+    if y_down_more_positive
       up = Vector.new(0, -1)
     else
       up = Vector.new(0, 1)
