@@ -56,9 +56,8 @@ class PursueState < BasicGameState
   def update(container, game, delta)
     delta_s = delta / 1000.0
 
-    predicted_position, steering_force = @bug.pursue(@target_pos, @target_vel)
-
-    @bug.feel_the_force(steering_force, delta_s)
+    predicted_position, steering_force = SteeringBehaviors::Pursue.steer(@bug, @target_pos, @target_vel)
+    SteeringBehaviors::Steering.feel_the_force(@bug, steering_force, delta_s)
     @bug.move(delta_s)
 
     @target_pos += @target_vel * delta_s

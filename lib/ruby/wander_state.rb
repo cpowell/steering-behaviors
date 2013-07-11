@@ -53,9 +53,8 @@ class WanderState < BasicGameState
   def update(container, game, delta)
     delta_s = delta / 1000.0
 
-    steering_force = @bug.wander(0.4)
-
-    @bug.feel_the_force(steering_force, delta_s)
+    steering_force = SteeringBehaviors::Wander.steer(@bug, 0.4)
+    SteeringBehaviors::Steering.feel_the_force(@bug, steering_force, delta_s)
     @bug.move(delta_s)
 
     # Wrap at edges

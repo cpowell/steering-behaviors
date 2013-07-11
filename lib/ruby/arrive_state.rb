@@ -55,9 +55,9 @@ class ArriveState < BasicGameState
   def update(container, game, delta)
     delta_s = delta / 1000.0
 
-    steering_force = @bug.arrive(@target_pos)
+    steering_force = SteeringBehaviors::Arrive.steer(@bug, @target_pos)
+    SteeringBehaviors::Steering.feel_the_force(@bug, steering_force, delta_s)
 
-    @bug.feel_the_force(steering_force, delta_s)
     @bug.move(delta_s)
 
     # Wrap at edges
