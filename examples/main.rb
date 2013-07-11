@@ -12,7 +12,7 @@
 
 $:.push File.expand_path('../../lib/', __FILE__)
 $:.push File.expand_path('../../examples/', __FILE__)
-$:.push File.expand_path('../../lib/steering-behaviors/', __FILE__)
+$:.push File.expand_path('../../lib/steering_behaviors/', __FILE__)
 
 require 'java'
 require 'lwjgl.jar'
