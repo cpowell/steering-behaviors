@@ -29,12 +29,12 @@ class SteeringBehaviors::Steering
         Math.cos(limited_crse) * desired_velocity.length
       )
 
-      printf "Desired course change %0.4f %s exceeds %0.4f allowable. Desired course [%0.4f], limited course [%0.4f]\n",
-        angle,
-        (direction==1 ? 'clockwise' : 'counter-clockwise'),
-        max_course_change,
-        desired_velocity.radians,
-        limited_crse
+      # printf "Desired course change %0.4f %s exceeds %0.4f allowable. Desired course [%0.4f], limited course [%0.4f]\n",
+      #   angle,
+      #   (direction==1 ? 'clockwise' : 'counter-clockwise'),
+      #   max_course_change,
+      #   desired_velocity.radians,
+      #   limited_crse
     else
       kinematic.velocity_vec = desired_velocity
     end
