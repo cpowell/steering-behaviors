@@ -11,7 +11,7 @@
 # whether run from the .rb files or as a compiled jar.
 
 $:.push File.expand_path('../../lib/', __FILE__)
-$:.push File.expand_path('../../lib/ruby/', __FILE__)
+$:.push File.expand_path('../../examples/', __FILE__)
 $:.push File.expand_path('../../lib/steering-behaviors/', __FILE__)
 
 require 'java'
