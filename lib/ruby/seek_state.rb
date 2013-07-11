@@ -55,7 +55,7 @@ class SeekState < BasicGameState
   def update(container, game, delta)
     delta_s = delta / 1000.0
 
-    steering_force = SteeringBehaviors::Steering.seek(@bug, @target_pos)
+    steering_force = SteeringBehaviors::Seek.steer(@bug, @target_pos)
 
     SteeringBehaviors::Steering.feel_the_force(@bug, steering_force, delta_s)
     @bug.move(delta_s)
