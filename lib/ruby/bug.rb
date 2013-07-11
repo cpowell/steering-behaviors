@@ -1,8 +1,6 @@
-require 'steering-behaviors/steering_behaviors'
+require 'steering-behaviors'
 
 class Bug
-  include SteeringBehaviors
-
   attr_reader :course, :speed, :mass, :maneuverability
   attr_reader :heading_vec, :velocity_vec, :position_vec
 

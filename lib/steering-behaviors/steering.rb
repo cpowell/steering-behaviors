@@ -1,4 +1,4 @@
-module SteeringBehaviors
+class SteeringBehaviors::Steering
   # Wander about in a 'random walk' way. Speeds up and slows down, too.
   # See http://www.red3d.com/cwr/steer/
   #
@@ -18,13 +18,14 @@ module SteeringBehaviors
   # See http://www.red3d.com/cwr/steer/
   #
   # * *Args*    :
+  #   - +kinematic+ ->
   #   - +goal_position+ -> the position-vector where we want to go
   # * *Returns* :
   #   - the calculated steering force
   #
-  def seek(goal_position)
-    desired_velocity = (goal_position - self.position_vec).normalize * self.max_speed
-    desired_velocity - self.velocity_vec
+  def self.seek(kinematic, goal_position)
+    desired_velocity = (goal_position - kinematic.position_vec).normalize * kinematic.max_speed
+    desired_velocity - kinematic.velocity_vec
   end
 
   #
@@ -145,23 +146,23 @@ module SteeringBehaviors
   #   - +steering_force+ -> force vector supplied by a steering behavior
   #   - +delta+ -> time delta (in seconds) used for scaling the result
   #
-  def feel_the_force(steering_force, delta) #, mobile, position)
-    acceleration = steering_force / self.mass
+  def self.feel_the_force(kinematic, steering_force, delta) #, mobile, position)
+    acceleration = steering_force / kinematic.mass
 
     # Compute the new, proposed velocity vector.
-    desired_velocity = self.velocity_vec + (acceleration * delta)
-    desired_velocity.truncate!(self.max_speed)
+    desired_velocity = kinematic.velocity_vec + (acceleration * delta)
+    desired_velocity.truncate!(kinematic.max_speed)
 
     # If this timeslice's proposed velocity-vector exceeds the turn rate,
     # come up with a revised velociy-vec that doesn't exceed the rate -- and use that.
-    angle             = Math.acos self.heading_vec.dot(desired_velocity.normalize)
-    max_course_change = self.max_turn * delta
+    angle             = Math.acos kinematic.heading_vec.dot(desired_velocity.normalize)
+    max_course_change = kinematic.max_turn * delta
 
     if angle.abs > max_course_change
-      direction    = Vector.sign(self.velocity_vec, desired_velocity) # -1==CCW, 1==CW
-      limited_crse = self.heading_vec.radians - max_course_change * direction
+      direction    = Vector.sign(kinematic.velocity_vec, desired_velocity) # -1==CCW, 1==CW
+      limited_crse = kinematic.heading_vec.radians - max_course_change * direction
 
-      self.velocity_vec = Vector.new(
+      kinematic.velocity_vec = Vector.new(
         Math.sin(limited_crse) * desired_velocity.length,
         Math.cos(limited_crse) * desired_velocity.length
       )
@@ -173,7 +174,7 @@ module SteeringBehaviors
         desired_velocity.radians,
         limited_crse
     else
-      self.velocity_vec = desired_velocity
+      kinematic.velocity_vec = desired_velocity
     end
   end
 
