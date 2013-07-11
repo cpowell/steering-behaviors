@@ -2,4 +2,4 @@ class SteeringBehaviors
 end
 
 require 'steering-behaviors/vector.rb'
-require 'steering-beahviors/behaviors.rb'
+require 'steering-behaviors/steering.rb'
