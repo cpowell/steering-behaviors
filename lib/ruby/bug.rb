@@ -1,7 +1,7 @@
 require 'steering-behaviors'
 
 class Bug
-  attr_reader :course, :speed, :mass, :maneuverability
+  attr_reader :course, :speed, :mass
   attr_reader :heading_vec, :velocity_vec, :position_vec
 
   attr_accessor :min_speed, :max_speed, :max_turn
@@ -16,12 +16,11 @@ class Bug
   #   - +course+ -> course in true degrees (0 is north)
   #   - +speed+ -> speed
   #   - +mass+ -> mass of the thing (more mass means slower acceleration)
-  #   - +maneuverability+ -> maneuverability of the thing (more means faster turning)
   #   - +max_turn+ -> max turn rate in rads per sec
   #   - +min_speed+ -> min speed
   #   - +max_speed+ -> max speed
   #
-  def initialize(x, y, course, speed, mass, maneuverability, max_turn, min_speed, max_speed)
+  def initialize(x, y, course, speed, mass, max_turn, min_speed, max_speed)
     super()
 
     @position_vec = Vector.new(x, y) # A non-normalized vector holding X,Y position
@@ -29,7 +28,6 @@ class Bug
     @course          = course
     @speed           = speed
     @mass            = mass
-    @maneuverability = maneuverability
     @max_turn        = max_turn
     @min_speed       = min_speed
     @max_speed       = max_speed

@@ -30,7 +30,7 @@ class WanderState < BasicGameState
   def init(container, game)
     @container = container
 
-    @bug = Bug.new(400, 400, 135, 100, 0.1, 10, 0.7854, 50, 150)
+    @bug = Bug.new(400, 400, 135, 100, 0.1, 0.7854, 50, 150)
 
     @bug_img = Circle.new(@bug.position_vec.x, @bug.position_vec.y, 5)
 
