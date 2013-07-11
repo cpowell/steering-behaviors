@@ -29,7 +29,7 @@ class WanderState < BasicGameState
   def init(container, game)
     @container = container
 
-    @bug = Bug.new(400, 400, 135, 100, 0.1, 0.7854, 50, 150)
+    @bug = Bug.new(400, 400, 135, 100, 0.1, 1.7854, 50, 150)
 
     @bug_img = Circle.new(@bug.position_vec.x, @bug.position_vec.y, 5)
 
@@ -53,7 +53,7 @@ class WanderState < BasicGameState
     delta_s = delta / 1000.0
 
     steering_force = SteeringBehaviors::Wander.steer(@bug, 0.4)
-    SteeringBehaviors::Steering.feel_the_force(@bug, steering_force, delta_s)
+    SteeringBehaviors::Steering.feel_the_force(@bug, steering_force * 4, delta_s)
     @bug.move(delta_s)
 
     # Wrap at edges
