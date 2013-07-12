@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'steering_behaviors'
-  s.version     = '0.0.4'
+  s.version     = '0.0.5'
   s.date        = '2013-07-11'
   s.summary     = "Steering behaviors in Ruby for autonymous game agents"
   s.description = <<-EOF

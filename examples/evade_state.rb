@@ -25,20 +25,21 @@ class EvadeState < BasicGameState
   # inside the method init.
   #
   # * *Args*    :
-  #   - +container+ -> game container that handles the game loop, fps recording and managing the input system
+  #   - +container+ -> game container
+  #   - +game+ -> the game itself
   #
   def init(container, game)
     @container = container
 
-    @bug = Bug.new(MAX_X/8, MAX_Y/8, 135, 100, 0.1, 1.7854, 50, 150)
-    @bug_img = Circle.new(@bug.position_vec.x, @bug.position_vec.y, 5)
+    @hunter = Bug.new(MAX_X/8, MAX_Y/8, 135, 100, 0.1, 1.7854, 50, 150)
+    @hunter_img = Circle.new(@hunter.position_vec.x, @hunter.position_vec.y, 5)
 
     randomize_target
-    @tgt_img = Circle.new(@target_pos.x, @target_pos.y, 5)
+    @tgt_img = Circle.new(@quarry.position_vec.x, @quarry.position_vec.y, 5)
 
     # Visual artifacts to illustrate what's going on...
-    @heading_line    = Line.new(@bug.position_vec.x, @bug.position_vec.y, (@bug.position_vec.x + @bug.heading_vec.x * VISUAL_SCALE), (@bug.position_vec.y + @bug.heading_vec.y * VISUAL_SCALE))
-    @steering_force_line  = Line.new(@bug.position_vec.x, @bug.position_vec.y, (@bug.position_vec.x + @bug.heading_vec.x * VISUAL_SCALE), (@bug.position_vec.y + @bug.heading_vec.y * VISUAL_SCALE))
+    @heading_line = Line.new(@hunter.position_vec.x, @hunter.position_vec.y, (@hunter.position_vec.x + @hunter.heading_vec.x * VISUAL_SCALE), (@hunter.position_vec.y + @hunter.heading_vec.y * VISUAL_SCALE))
+    @steering_force_line  = Line.new(@hunter.position_vec.x, @hunter.position_vec.y, (@hunter.position_vec.x + @hunter.heading_vec.x * VISUAL_SCALE), (@hunter.position_vec.y + @hunter.heading_vec.y * VISUAL_SCALE))
 
     @intercept_img = Circle.new(0, 0, 4)
   end
@@ -49,48 +50,48 @@ class EvadeState < BasicGameState
   # enemies, etc. Your game logic goes here.
   #
   # * *Args*    :
-  #   - +container+ -> game container that handles the game loop, fps recording and managing the input system
-  #   - +delta+ -> the number of ms since update was last called. We can use it to 'weight' the changes we make.
+  #   - +container+ -> game container
+  #   - +g+ -> graphics context that can be used to render
+  #   - +delta+ -> timeslice in seconds
   #
   def update(container, game, delta)
     delta_s = delta / 1000.0
 
-    predicted_position, steering_force = SteeringBehaviors::Evade.steer(@bug, @target_pos, @target_vel)
-    SteeringBehaviors::Steering.feel_the_force(@bug, steering_force, delta_s)
-    @bug.move(delta_s)
-
-    @target_pos += @target_vel * delta_s
+    predicted_position, steering_force = SteeringBehaviors::Evade.steer(@hunter, @quarry)
+    SteeringBehaviors::Steering.feel_the_force(@hunter, steering_force, delta_s)
+    @hunter.move(delta_s)
+    @quarry.move(delta_s)
 
     # Wrap at edges
-    if @bug.position_vec.x > MAX_X || @bug.position_vec.y > MAX_Y ||
-    @bug.position_vec.x < 0 || @bug.position_vec.y < 0
+    if @hunter.position_vec.x > MAX_X || @hunter.position_vec.y > MAX_Y ||
+      @hunter.position_vec.x < 0 || @hunter.position_vec.y < 0
       randomize_target
-      @bug.position_vec.x = rand(MAX_X)
-      @bug.position_vec.y = rand(MAX_Y)
+      @hunter.position_vec.x = rand(MAX_X)
+      @hunter.position_vec.y = rand(MAX_Y)
     end
 
-    @target_pos.x = 0 if @target_pos.x > MAX_X
-    @target_pos.y = 0 if @target_pos.y > MAX_Y
-    @target_pos.x = MAX_X if @target_pos.x < 0
-    @target_pos.y = MAX_Y if @target_pos.y < 0
+    @quarry.position_vec.x = 0 if @quarry.position_vec.x > MAX_X
+    @quarry.position_vec.y = 0 if @quarry.position_vec.y > MAX_Y
+    @quarry.position_vec.x = MAX_X if @quarry.position_vec.x < 0
+    @quarry.position_vec.y = MAX_Y if @quarry.position_vec.y < 0
 
     # Revise the visual artifacts
-    @bug_img.setCenterX @bug.position_vec.x
-    @bug_img.setCenterY @bug.position_vec.y
+    @hunter_img.setCenterX @hunter.position_vec.x
+    @hunter_img.setCenterY @hunter.position_vec.y
 
-    @tgt_img.setCenterX @target_pos.x
-    @tgt_img.setCenterY @target_pos.y
+    @tgt_img.setCenterX @quarry.position_vec.x
+    @tgt_img.setCenterY @quarry.position_vec.y
 
     @intercept_img.setCenterX predicted_position.x
     @intercept_img.setCenterY predicted_position.y
 
-    @heading_line.set @bug.position_vec.x, @bug.position_vec.y, (@bug.position_vec.x + @bug.heading_vec.x * VISUAL_SCALE), (@bug.position_vec.y + @bug.heading_vec.y * VISUAL_SCALE)
+    @heading_line.set @hunter.position_vec.x, @hunter.position_vec.y, (@hunter.position_vec.x + @hunter.heading_vec.x * VISUAL_SCALE), (@hunter.position_vec.y + @hunter.heading_vec.y * VISUAL_SCALE)
 
-    @steering_force_line.set @bug.position_vec.x, @bug.position_vec.y,
-      (steering_force.x + @bug.position_vec.x),
-      (steering_force.y + @bug.position_vec.y)
+    @steering_force_line.set @hunter.position_vec.x, @hunter.position_vec.y,
+      (steering_force.x + @hunter.position_vec.x),
+      (steering_force.y + @hunter.position_vec.y)
 
-    if (@target_pos.x - @bug.position_vec.x).abs < 10 && (@target_pos.y - @bug.position_vec.y).abs < 10
+    if (@quarry.position_vec.x - @hunter.position_vec.x).abs < 10 && (@quarry.position_vec.y - @hunter.position_vec.y).abs < 10
       randomize_target
     end
   end
@@ -99,18 +100,15 @@ class EvadeState < BasicGameState
   # accordingly to the variables calculated in the update method.
   #
   # * *Args*    :
-  #   - +container+ -> game container that handles the game loop, fps recording and managing the input system
-  #   - +g+ -> graphics context that can be used to render. However, normal rendering routines can also be used.
+  #   - +container+ -> game container
+  #   - +g+ -> graphics context that can be used to render
   #
   def render(container, game, g)
-    # Make sure you "layer" things in here from bottom to top...
-    # @bg_image.draw(0, 0)
-
     g.setColor(Color.white)
-    g.draw_string("Evading (r to randomize, p to pause, ESC to exit)", 8, container.height - 30)
+    g.draw_string("Pursuing (p to pause, ESC to exit)", 8, container.height - 30)
 
     g.setColor(Color.green)
-    g.draw(@bug_img)
+    g.draw(@hunter_img)
 
     g.setColor(Color.red)
     g.draw @heading_line
@@ -134,8 +132,6 @@ class EvadeState < BasicGameState
   def keyReleased(key, char)
     if key==Input::KEY_ESCAPE
       @container.exit
-    elsif key==Input::KEY_R
-      randomize_target
     elsif key==Input::KEY_P
       if @container.isPaused
         @container.resume
@@ -145,8 +141,8 @@ class EvadeState < BasicGameState
     end
   end
 
+  # Place the quarry somewhere random...
   def randomize_target
-    @target_pos = SteeringBehaviors::Vector.new(rand(MAX_X/2..MAX_X), rand(MAX_Y/2..MAX_Y))
-    @target_vel = SteeringBehaviors::Vector.new(rand(-MAX_TGT_VEL..MAX_TGT_VEL), rand(-MAX_TGT_VEL..MAX_TGT_VEL))
+    @quarry = Bug.new(rand(MAX_X/2..MAX_X), rand(MAX_Y/2..MAX_Y), rand(360), rand(50..120), 0, 0, 0,0)
   end
 end
