@@ -1,5 +1,3 @@
-require 'common'
-
 class SteeringBehaviors::Evade
   extend SteeringBehaviors::Common
 

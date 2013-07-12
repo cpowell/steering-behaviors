@@ -1,5 +1,3 @@
-require 'common'
-
 class SteeringBehaviors::Pursue
   extend SteeringBehaviors::Common
 
