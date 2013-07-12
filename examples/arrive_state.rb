@@ -6,7 +6,6 @@
 # You can redistribute and/or modify this software only in accordance with
 # the terms found in the "LICENSE" file included with the framework.
 
-require 'vector'
 require 'bug'
 
 class ArriveState < BasicGameState
@@ -137,6 +136,6 @@ class ArriveState < BasicGameState
   end
 
   def randomize_target
-    @target_pos = Vector.new(rand(MAX_X/2..MAX_X), rand(MAX_Y/2..MAX_Y))
+    @target_pos = SteeringBehaviors::Vector.new(rand(MAX_X/2..MAX_X), rand(MAX_Y/2..MAX_Y))
   end
 end

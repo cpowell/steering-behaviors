@@ -1,4 +1,4 @@
-class Vector
+class SteeringBehaviors::Vector
   attr_reader :x, :y
 
   def initialize(x=0,y=0)
@@ -19,19 +19,19 @@ class Vector
   end
 
   def +(v)
-    Vector.new(@x + v.x, @y + v.y)
+    SteeringBehaviors::Vector.new(@x + v.x, @y + v.y)
   end
 
   def /(n)
-    Vector.new(@x/n, @y/n)
+    SteeringBehaviors::Vector.new(@x/n, @y/n)
   end
 
   def *(n)
-    Vector.new(@x*n, @y*n)
+    SteeringBehaviors::Vector.new(@x*n, @y*n)
   end
 
   def -(v)
-    Vector.new(@x - v.x, @y - v.y)
+    SteeringBehaviors::Vector.new(@x - v.x, @y - v.y)
   end
 
   def normalize!
@@ -43,9 +43,9 @@ class Vector
 
   def normalize
     if length != 0
-      Vector.new(@x/length, @y/length)
+      SteeringBehaviors::Vector.new(@x/length, @y/length)
     else
-      Vector.new(0,0)
+      SteeringBehaviors::Vector.new(0,0)
     end
   end
 
@@ -66,27 +66,27 @@ class Vector
   end
 
   def perpendicular
-    Vector.new(@y, -@x)
+    SteeringBehaviors::Vector.new(@y, -@x)
   end
 
   def compass_bearing(y_down_more_positive=false)
     if y_down_more_positive
-      up = Vector.new(0, -1)
+      up = SteeringBehaviors::Vector.new(0, -1)
     else
-      up = Vector.new(0, 1)
+      up = SteeringBehaviors::Vector.new(0, 1)
     end
 
     theta = Math.acos(self.normalize.dot(up))
 
     theta *= -1 if @x < 0
-    degs = Vector.rad2deg(theta)
+    degs = SteeringBehaviors::Vector.rad2deg(theta)
     degs += 360 if degs < 0
 
     degs
   end
 
   def sign(other)
-    Vector.sign(self,other)
+    SteeringBehaviors::Vector.sign(self,other)
   end
 
   def radians
@@ -99,7 +99,7 @@ class Vector
   end
 
   def from_compass_bearing!(brg)
-    rad = Vector.deg2rad(brg)
+    rad = SteeringBehaviors::Vector.deg2rad(brg)
     self.x = Math.sin(rad)
     self.y = Math.cos(rad)
   end
@@ -122,7 +122,7 @@ class Vector
     x_rot = circle_cos * x - circle_sin * y
     y_rot = circle_sin * x + circle_cos * y
 
-    return Vector.new(x_rot, y_rot)
+    return SteeringBehaviors::Vector.new(x_rot, y_rot)
   end
 
   def self.sign(v1, v2)
@@ -139,7 +139,7 @@ class Vector
     x = Math.sin(local_angle) * point.length
     y = Math.cos(local_angle) * point.length
 
-    world_point = Vector.new(x,y) + pos
+    world_point = SteeringBehaviors::Vector.new(x,y) + pos
     return world_point
   end
 

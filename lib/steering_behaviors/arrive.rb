@@ -20,7 +20,7 @@ class SteeringBehaviors::Arrive
       desired_velocity = to_target.normalize * desired_speed
       return desired_velocity - kinematic.velocity_vec
     else
-      return Vector.new(0,0)
+      return SteeringBehaviors::Vector.new(0,0)
     end
   end
 end

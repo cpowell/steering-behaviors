@@ -21,10 +21,10 @@ class SteeringBehaviors::Steering
     max_course_change = kinematic.max_turn * delta
 
     if angle.abs > max_course_change
-      direction    = Vector.sign(kinematic.velocity_vec, desired_velocity) # -1==CCW, 1==CW
+      direction    = SteeringBehaviors::Vector.sign(kinematic.velocity_vec, desired_velocity) # -1==CCW, 1==CW
       limited_crse = kinematic.heading_vec.radians - max_course_change * direction
 
-      kinematic.velocity_vec = Vector.new(
+      kinematic.velocity_vec = SteeringBehaviors::Vector.new(
         Math.sin(limited_crse) * desired_velocity.length,
         Math.cos(limited_crse) * desired_velocity.length
       )

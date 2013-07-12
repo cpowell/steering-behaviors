@@ -8,7 +8,7 @@ class SteeringBehaviors::Wander
   #   - the calculated steering force
   #
   def self.steer(kinematic, erraticism)
-    kinematic.steering_target += Vector.new(rand(-1.0..1.0)*erraticism, rand(-1.0..1.0)*erraticism)
+    kinematic.steering_target += SteeringBehaviors::Vector.new(rand(-1.0..1.0)*erraticism, rand(-1.0..1.0)*erraticism)
     kinematic.steering_target.normalize!
 
     kinematic.steering_target.rotate(kinematic.heading_vec.radians)
