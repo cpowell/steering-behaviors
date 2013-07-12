@@ -15,7 +15,7 @@ class SteeringBehaviors::Vector
   end
 
   def length
-    @length ||= Math.sqrt(@x**2 + @y**2)
+    Math.sqrt(@x**2 + @y**2)
   end
 
   def +(v)
@@ -112,6 +112,7 @@ class SteeringBehaviors::Vector
     y_rot = circle_sin * x + circle_cos * y
 
     self.x, self.y = x_rot, y_rot
+    self
   end
 
   def rotate(radians)
@@ -122,7 +123,7 @@ class SteeringBehaviors::Vector
     x_rot = circle_cos * x - circle_sin * y
     y_rot = circle_sin * x + circle_cos * y
 
-    return SteeringBehaviors::Vector.new(x_rot, y_rot)
+    SteeringBehaviors::Vector.new(x_rot, y_rot)
   end
 
   def self.sign(v1, v2)
@@ -140,7 +141,7 @@ class SteeringBehaviors::Vector
     y = Math.cos(local_angle) * point.length
 
     world_point = SteeringBehaviors::Vector.new(x,y) + pos
-    return world_point
+    world_point
   end
 
   def self.deg2rad(d)

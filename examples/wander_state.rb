@@ -36,7 +36,7 @@ class WanderState < BasicGameState
     # Visual artifacts to illustrate what's going on...
     @steering_circle = Circle.new(@bug.position_vec.x, @bug.position_vec.y, VISUAL_SCALE)
     @heading_line    = Line.new(@bug.position_vec.x, @bug.position_vec.y, (@bug.position_vec.x + @bug.heading_vec.x * VISUAL_SCALE), (@bug.position_vec.y + @bug.heading_vec.y * VISUAL_SCALE))
-    @steering_target = Circle.new(@bug.position_vec.x, @bug.position_vec.y, 4)
+    @end_point       = Circle.new(@bug.position_vec.x, @bug.position_vec.y, 4)
     @steering_force  = Line.new(@bug.position_vec.x, @bug.position_vec.y, (@bug.position_vec.x + @bug.heading_vec.x * VISUAL_SCALE), (@bug.position_vec.y + @bug.heading_vec.y * VISUAL_SCALE))
   end
 
@@ -71,10 +71,10 @@ class WanderState < BasicGameState
 
     @heading_line.set @bug.position_vec.x, @bug.position_vec.y, (@bug.position_vec.x + @bug.heading_vec.x * VISUAL_SCALE), (@bug.position_vec.y + @bug.heading_vec.y * VISUAL_SCALE)
 
-    @steering_target.setCenterX steering_force.x * VISUAL_SCALE + @bug.position_vec.x
-    @steering_target.setCenterY steering_force.y * VISUAL_SCALE + @bug.position_vec.y
+    @end_point.setCenterX steering_force.x * VISUAL_SCALE + @bug.position_vec.x
+    @end_point.setCenterY steering_force.y * VISUAL_SCALE + @bug.position_vec.y
 
-    @steering_force.set @bug.position_vec.x, @bug.position_vec.y, @steering_target.getCenterX, @steering_target.getCenterY
+    @steering_force.set @bug.position_vec.x, @bug.position_vec.y, @end_point.getCenterX, @end_point.getCenterY
 
     # printf "Crs: %0.4f  Hdg: %0.4f  Spd: %0.1f\n", @bug.velocity_vec.radians, @bug.heading_vec.radians, @bug.speed
   end
@@ -102,7 +102,7 @@ class WanderState < BasicGameState
     g.draw @heading_line
 
     g.setColor(Color.yellow)
-    g.draw @steering_target
+    g.draw @end_point
 
     g.setColor(Color.cyan)
     g.draw @steering_force

@@ -115,14 +115,8 @@ class PursueState < BasicGameState
     g.setColor(Color.green)
     g.draw(@bug_img)
 
-    # g.setColor(Color.blue)
-    # g.draw @steering_circle
-
     g.setColor(Color.red)
     g.draw @heading_line
-
-    # g.setColor(Color.yellow)
-    # g.draw @steering_target
 
     g.setColor(Color.cyan)
     g.draw @steering_force_line
