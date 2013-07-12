@@ -16,8 +16,7 @@ A copy of the GNU Lesser General Public License is at the end of this file, or  
 
 ----
 
-The Ruby Steering Behaviors Library depends on LWJGL and Slick2D to operate. These products have
-their own licenses as follows.
+The examples (*only* the examples) provided in the Ruby Steering Behaviors Library depend on LWJGL and Slick2D to operate. These products have their own licenses as follows.
 
 The Slick2D license:
   Copyright (c) 2012, Slick 2D All rights reserved.
