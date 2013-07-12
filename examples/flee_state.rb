@@ -6,16 +6,14 @@
 # You can redistribute and/or modify this software only in accordance with
 # the terms found in the "LICENSE" file included with the framework.
 
-require 'vector'
 require 'bug'
 
-class PursueState < BasicGameState
-  ID = 5 # Unique ID for this Slick game state
+class FleeState < BasicGameState
+  ID = 4 # Unique ID for this Slick game state
 
   VISUAL_SCALE = 50
   MAX_X = 800
   MAX_Y = 800
-  MAX_TGT_VEL = 100
 
   # Required by StateBasedGame
   def getID
@@ -31,7 +29,7 @@ class PursueState < BasicGameState
   def init(container, game)
     @container = container
 
-    @bug = Bug.new(MAX_X/8, MAX_Y/8, 135, 100, 0.1, 10, 1.7854, 50, 150)
+    @bug = Bug.new(MAX_X/8, MAX_Y/8, 135, 100, 0.1, 1.7854, 50, 150)
     @bug_img = Circle.new(@bug.position_vec.x, @bug.position_vec.y, 5)
 
     randomize_target
@@ -40,7 +38,6 @@ class PursueState < BasicGameState
     # Visual artifacts to illustrate what's going on...
     @heading_line    = Line.new(@bug.position_vec.x, @bug.position_vec.y, (@bug.position_vec.x + @bug.heading_vec.x * VISUAL_SCALE), (@bug.position_vec.y + @bug.heading_vec.y * VISUAL_SCALE))
     @steering_force_line  = Line.new(@bug.position_vec.x, @bug.position_vec.y, (@bug.position_vec.x + @bug.heading_vec.x * VISUAL_SCALE), (@bug.position_vec.y + @bug.heading_vec.y * VISUAL_SCALE))
-
     @intercept_img = Circle.new(0, 0, 4)
   end
 
@@ -56,23 +53,17 @@ class PursueState < BasicGameState
   def update(container, game, delta)
     delta_s = delta / 1000.0
 
-    predicted_position, steering_force = @bug.pursue(@target_pos, @target_vel)
-
-    @bug.feel_the_force(steering_force, delta_s)
+    steering_force = SteeringBehaviors::Flee.steer(@bug, @target_pos)
+    SteeringBehaviors::Steering.feel_the_force(@bug, steering_force, delta_s)
     @bug.move(delta_s)
 
-    @target_pos += @target_vel * delta_s
-
     # Wrap at edges
-    @bug.position_vec.x = 0 if @bug.position_vec.x > MAX_X
-    @bug.position_vec.y = 0 if @bug.position_vec.y > MAX_Y
-    @bug.position_vec.x = MAX_X if @bug.position_vec.x < 0
-    @bug.position_vec.y = MAX_Y if @bug.position_vec.y < 0
-
-    @target_pos.x = 0 if @target_pos.x > MAX_X
-    @target_pos.y = 0 if @target_pos.y > MAX_Y
-    @target_pos.x = MAX_X if @target_pos.x < 0
-    @target_pos.y = MAX_Y if @target_pos.y < 0
+    if @bug.position_vec.x > MAX_X || @bug.position_vec.y > MAX_Y ||
+    @bug.position_vec.x < 0 || @bug.position_vec.y < 0
+      randomize_target
+      @bug.position_vec.x = rand(MAX_X)
+      @bug.position_vec.y = rand(MAX_Y)
+    end
 
     # Revise the visual artifacts
     @bug_img.setCenterX @bug.position_vec.x
@@ -80,9 +71,6 @@ class PursueState < BasicGameState
 
     @tgt_img.setCenterX @target_pos.x
     @tgt_img.setCenterY @target_pos.y
-
-    @intercept_img.setCenterX predicted_position.x
-    @intercept_img.setCenterY predicted_position.y
 
     # @steering_circle.setCenterX @bug.position_vec.x
     # @steering_circle.setCenterY @bug.position_vec.y
@@ -112,28 +100,19 @@ class PursueState < BasicGameState
     # @bg_image.draw(0, 0)
 
     g.setColor(Color.white)
-    g.draw_string("Pursuing (p to pause, ESC to exit)", 8, container.height - 30)
+    g.draw_string("Fleeing (p to pause, ESC to exit)", 8, container.height - 30)
 
     g.setColor(Color.green)
     g.draw(@bug_img)
 
-    # g.setColor(Color.blue)
-    # g.draw @steering_circle
-
     g.setColor(Color.red)
     g.draw @heading_line
-
-    # g.setColor(Color.yellow)
-    # g.draw @steering_target
 
     g.setColor(Color.cyan)
     g.draw @steering_force_line
 
     g.setColor(Color.yellow)
     g.draw @tgt_img
-
-    g.setColor(Color.white)
-    g.draw @intercept_img
   end
 
   # Notification that a key was released
@@ -155,7 +134,6 @@ class PursueState < BasicGameState
   end
 
   def randomize_target
-    @target_pos = Vector.new(rand(MAX_X/2..MAX_X), rand(MAX_Y/2..MAX_Y))
-    @target_vel = Vector.new(rand(-MAX_TGT_VEL..MAX_TGT_VEL), rand(-MAX_TGT_VEL..MAX_TGT_VEL))
+    @target_pos = SteeringBehaviors::Vector.new(rand(0..MAX_X), rand(0..MAX_Y))
   end
 end

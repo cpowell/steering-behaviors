@@ -6,11 +6,10 @@
 # You can redistribute and/or modify this software only in accordance with
 # the terms found in the "LICENSE" file included with the framework.
 
-require 'vector'
 require 'bug'
 
-class WanderState < BasicGameState
-  ID = 2 # Unique ID for this Slick game state
+class ArriveState < BasicGameState
+  ID = 6 # Unique ID for this Slick game state
 
   VISUAL_SCALE = 50
   MAX_X = 800
@@ -30,15 +29,17 @@ class WanderState < BasicGameState
   def init(container, game)
     @container = container
 
-    @bug = Bug.new(400, 400, 135, 100, 0.1, 10, 0.7854, 50, 150)
-
+    @bug = Bug.new(MAX_X/8, MAX_Y/8, 135, 100, 0.1, 1.7854, 0, 150)
     @bug_img = Circle.new(@bug.position_vec.x, @bug.position_vec.y, 5)
 
+    randomize_target
+    @tgt_img = Circle.new(@target_pos.x, @target_pos.y, 5)
+
     # Visual artifacts to illustrate what's going on...
-    @steering_circle = Circle.new(@bug.position_vec.x, @bug.position_vec.y, VISUAL_SCALE)
     @heading_line    = Line.new(@bug.position_vec.x, @bug.position_vec.y, (@bug.position_vec.x + @bug.heading_vec.x * VISUAL_SCALE), (@bug.position_vec.y + @bug.heading_vec.y * VISUAL_SCALE))
-    @steering_target = Circle.new(@bug.position_vec.x, @bug.position_vec.y, 4)
-    @steering_force  = Line.new(@bug.position_vec.x, @bug.position_vec.y, (@bug.position_vec.x + @bug.heading_vec.x * VISUAL_SCALE), (@bug.position_vec.y + @bug.heading_vec.y * VISUAL_SCALE))
+    @steering_force_line  = Line.new(@bug.position_vec.x, @bug.position_vec.y, (@bug.position_vec.x + @bug.heading_vec.x * VISUAL_SCALE), (@bug.position_vec.y + @bug.heading_vec.y * VISUAL_SCALE))
+
+    @intercept_img = Circle.new(0, 0, 4)
   end
 
   # The update method is called during the game to update the logic in our
@@ -53,9 +54,9 @@ class WanderState < BasicGameState
   def update(container, game, delta)
     delta_s = delta / 1000.0
 
-    steering_force = @bug.wander(0.4)
+    steering_force = SteeringBehaviors::Arrive.steer(@bug, @target_pos)
+    SteeringBehaviors::Steering.feel_the_force(@bug, steering_force, delta_s)
 
-    @bug.feel_the_force(steering_force, delta_s)
     @bug.move(delta_s)
 
     # Wrap at edges
@@ -68,15 +69,21 @@ class WanderState < BasicGameState
     @bug_img.setCenterX @bug.position_vec.x
     @bug_img.setCenterY @bug.position_vec.y
 
-    @steering_circle.setCenterX @bug.position_vec.x
-    @steering_circle.setCenterY @bug.position_vec.y
+    @tgt_img.setCenterX @target_pos.x
+    @tgt_img.setCenterY @target_pos.y
+
+    # @steering_circle.setCenterX @bug.position_vec.x
+    # @steering_circle.setCenterY @bug.position_vec.y
 
     @heading_line.set @bug.position_vec.x, @bug.position_vec.y, (@bug.position_vec.x + @bug.heading_vec.x * VISUAL_SCALE), (@bug.position_vec.y + @bug.heading_vec.y * VISUAL_SCALE)
 
-    @steering_target.setCenterX steering_force.x * VISUAL_SCALE + @bug.position_vec.x
-    @steering_target.setCenterY steering_force.y * VISUAL_SCALE + @bug.position_vec.y
+    @steering_force_line.set @bug.position_vec.x, @bug.position_vec.y,
+      (steering_force.x + @bug.position_vec.x),
+      (steering_force.y + @bug.position_vec.y)
 
-    @steering_force.set @bug.position_vec.x, @bug.position_vec.y, @steering_target.getCenterX, @steering_target.getCenterY
+    if (@target_pos.x - @bug.position_vec.x).abs < 10 && (@target_pos.y - @bug.position_vec.y).abs < 10
+      randomize_target
+    end
 
     # printf "Crs: %0.4f  Hdg: %0.4f  Spd: %0.1f\n", @bug.velocity_vec.radians, @bug.heading_vec.radians, @bug.speed
   end
@@ -91,23 +98,21 @@ class WanderState < BasicGameState
   def render(container, game, g)
     # Make sure you "layer" things in here from bottom to top...
     # @bg_image.draw(0, 0)
+
     g.setColor(Color.white)
-    g.draw_string("Wandering (p to pause, ESC to exit)", 8, container.height - 30)
+    g.draw_string("Arriving (r to randomize target, p to pause, ESC to exit)", 8, container.height - 30)
 
     g.setColor(Color.green)
     g.draw(@bug_img)
 
-    g.setColor(Color.blue)
-    g.draw @steering_circle
-
     g.setColor(Color.red)
     g.draw @heading_line
 
-    g.setColor(Color.yellow)
-    g.draw @steering_target
-
     g.setColor(Color.cyan)
-    g.draw @steering_force
+    g.draw @steering_force_line
+
+    g.setColor(Color.yellow)
+    g.draw @tgt_img
   end
 
   # Notification that a key was released
@@ -119,6 +124,8 @@ class WanderState < BasicGameState
   def keyReleased(key, char)
     if key==Input::KEY_ESCAPE
       @container.exit
+    elsif key==Input::KEY_R
+      randomize_target
     elsif key==Input::KEY_P
       if @container.isPaused
         @container.resume
@@ -128,4 +135,7 @@ class WanderState < BasicGameState
     end
   end
 
+  def randomize_target
+    @target_pos = SteeringBehaviors::Vector.new(rand(MAX_X/2..MAX_X), rand(MAX_Y/2..MAX_Y))
+  end
 end

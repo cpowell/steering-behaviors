@@ -1,9 +1,5 @@
-require 'steering-behaviors/steering_behaviors'
-
 class Bug
-  include SteeringBehaviors
-
-  attr_reader :course, :speed, :mass, :maneuverability
+  attr_reader :course, :speed, :mass
   attr_reader :heading_vec, :velocity_vec, :position_vec
 
   attr_accessor :min_speed, :max_speed, :max_turn
@@ -18,31 +14,29 @@ class Bug
   #   - +course+ -> course in true degrees (0 is north)
   #   - +speed+ -> speed
   #   - +mass+ -> mass of the thing (more mass means slower acceleration)
-  #   - +maneuverability+ -> maneuverability of the thing (more means faster turning)
   #   - +max_turn+ -> max turn rate in rads per sec
   #   - +min_speed+ -> min speed
   #   - +max_speed+ -> max speed
   #
-  def initialize(x, y, course, speed, mass, maneuverability, max_turn, min_speed, max_speed)
+  def initialize(x, y, course, speed, mass, max_turn, min_speed, max_speed)
     super()
 
-    @position_vec = Vector.new(x, y) # A non-normalized vector holding X,Y position
+    @position_vec = SteeringBehaviors::Vector.new(x, y) # A non-normalized vector holding X,Y position
 
     @course          = course
     @speed           = speed
     @mass            = mass
-    @maneuverability = maneuverability
     @max_turn        = max_turn
     @min_speed       = min_speed
     @max_speed       = max_speed
 
-    @steering_target   = Vector.new(0, 1.0) # relative to me; i.e. straight ahead
+    @steering_target   = SteeringBehaviors::Vector.new(0, 1.0) # relative to me; i.e. straight ahead
 
     # We could, in theory, handle 'pointing in one direction while moving in another.'
     # (Think of the spaceship in _Asteroids_.) In this simulation we don't bother,
     # but we support such capability.
-    @velocity_vec = Vector.new # A non-normalized vector implying direction AND speed.
-    @heading_vec  = Vector.new # A normalized vector for pure heading information
+    @velocity_vec = SteeringBehaviors::Vector.new # A non-normalized vector implying direction AND speed.
+    @heading_vec  = SteeringBehaviors::Vector.new # A normalized vector for pure heading information
 
     calculate_vectors
   end
@@ -51,7 +45,7 @@ class Bug
     @velocity_vec = new_vec
     @velocity_vec.truncate!(@max_speed)
 
-    @course      = @velocity_vec.compass_bearing
+    @course      = @velocity_vec.compass_bearing(true)
     @heading_vec = @velocity_vec.normalize
 
     if @velocity_vec.length < @min_speed
@@ -83,8 +77,8 @@ class Bug
   private
 
   def calculate_vectors
-    @velocity_vec.x = @speed * Math.sin(Vector.deg2rad(@course))
-    @velocity_vec.y = @speed * Math.cos(Vector.deg2rad(@course))
+    @velocity_vec.x = @speed * Math.sin(SteeringBehaviors::Vector.deg2rad(@course))
+    @velocity_vec.y = @speed * Math.cos(SteeringBehaviors::Vector.deg2rad(@course))
 
     @heading_vec = @velocity_vec.normalize
   end

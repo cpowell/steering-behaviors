@@ -12,6 +12,7 @@ require 'seek_state'
 require 'flee_state'
 require 'pursue_state'
 require 'arrive_state'
+require 'steering_behaviors'
 
 class Game < StateBasedGame
   def initialize(name)
