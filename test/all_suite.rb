@@ -4,4 +4,4 @@
 # or just
 # $ rake test
 
-require "test/entity_manager_test"
+require "test/vector_test"

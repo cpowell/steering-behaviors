@@ -6,6 +6,11 @@ class SteeringBehaviors::Vector
     @y = y.to_f
   end
 
+  def ==(other)
+    self.class == other.class && @x==other.x && @y==other.y
+  end
+  alias_method :eql?, :==
+
   def x=(x)
     @x = x.to_f
   end
@@ -35,30 +40,35 @@ class SteeringBehaviors::Vector
   end
 
   def normalize!
-    return if length == 1.0 || length == 0
+    orig_length = length
+    return self if orig_length == 1.0 || orig_length == 0
 
-    @x /= length
-    @y /= length
+    @x /= orig_length
+    @y /= orig_length
+
+    self
   end
 
   def normalize
-    if length != 0
-      SteeringBehaviors::Vector.new(@x/length, @y/length)
-    else
-      SteeringBehaviors::Vector.new(0,0)
-    end
+    orig_length = length
+    return self if orig_length == 1.0 || orig_length == 0
+
+    SteeringBehaviors::Vector.new(@x/orig_length, @y/orig_length)
   end
 
   def truncate!(max)
-    return if length < max
+    return self if length < max
 
     self.normalize!
     self.x *= max
     self.y *= max
+
+    self
   end
 
-  def dot(vector)
-    val = @x*vector.x + @y*vector.y
+  # A · B = A.x * B.x + A.y * B.y
+  def dot(b)
+    val = @x*b.x + @y*b.y
     val = 1.0 if val > 1.0
     val = -1.0 if val < -1.0
 
@@ -86,7 +96,7 @@ class SteeringBehaviors::Vector
   end
 
   def sign(other)
-    SteeringBehaviors::Vector.sign(self,other)
+    SteeringBehaviors::Vector.sign(self, other)
   end
 
   def radians
@@ -128,21 +138,21 @@ class SteeringBehaviors::Vector
 
   def self.sign(v1, v2)
     if v1.y * v2.x > v1.x*v2.y
-      return -1 # anti-clockwise
+      return -1 # clockwise
     else
-      return 1 # clockwise
+      return 1 # anti-clockwise
     end
   end
 
-  def self.position_to_world_coords(point, heading, pos)
-    local_angle = heading.radians + point.radians
+  # def self.position_to_world_coords(point, heading_vec, pos)
+  #   local_angle = heading_vec.radians + point.radians
 
-    x = Math.sin(local_angle) * point.length
-    y = Math.cos(local_angle) * point.length
+  #   x = Math.sin(local_angle) * point.length
+  #   y = Math.cos(local_angle) * point.length
 
-    world_point = SteeringBehaviors::Vector.new(x,y) + pos
-    world_point
-  end
+  #   world_point = SteeringBehaviors::Vector.new(x,y) + pos
+  #   world_point
+  # end
 
   def self.deg2rad(d)
     d * 0.017453292519943295 # Math::PI / 180.0
@@ -152,7 +162,13 @@ class SteeringBehaviors::Vector
     r * 57.29577951308232 # 180.0 / Math::PI
   end
 
-  def to_s
-    format("Vector {[%.3f, %.3f] len %0.3f}", @x, @y, length)
+  def self.from_compass_bearing(brg)
+    rad = SteeringBehaviors::Vector.deg2rad(brg)
+    SteeringBehaviors::Vector.new(Math.sin(rad), Math.cos(rad))
   end
+
+  def to_s
+    format("Vector {[%.7f, %.7f] len %0.7f}", @x, @y, length)
+  end
+
 end
