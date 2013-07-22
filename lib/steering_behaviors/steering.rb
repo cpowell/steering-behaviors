@@ -5,6 +5,7 @@ class SteeringBehaviors::Steering
   # directly alters the provided Mobile component.
   #
   # * *Args*    :
+  #   - +kinematic+ -> the kinematic thing
   #   - +steering_force+ -> force vector supplied by a steering behavior
   #   - +delta+ -> time delta (in seconds) used for scaling the result
   #
