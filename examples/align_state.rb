@@ -100,7 +100,7 @@ class AlignState < BasicGameState
   #
   def render(container, game, g)
     g.setColor(Color.white)
-    g.draw_string("Pursuing (p to pause, ESC to exit)", 8, container.height - 30)
+    g.draw_string("Aligning (p to pause, r to randomize, ESC to exit)", 8, container.height - 30)
 
     g.setColor(Color.green)
     g.draw(@hunter_img)
