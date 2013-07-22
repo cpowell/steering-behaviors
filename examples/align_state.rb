@@ -57,7 +57,7 @@ class AlignState < BasicGameState
   def update(container, game, delta)
     delta_s = delta / 1000.0
 
-    steering_force = SteeringBehaviors::Align.steer(@hunter, @quarry)
+    steering_force = SteeringBehaviors::Align.steer(@hunter, @quarry, 0.02)
     SteeringBehaviors::Steering.feel_the_force(@hunter, steering_force, delta_s)
     @hunter.move(delta_s)
     @quarry.move(delta_s)
@@ -140,6 +140,6 @@ class AlignState < BasicGameState
 
   # Place the quarry somewhere random...
   def randomize_target
-    @quarry = Bug.new(rand(MAX_X/2..MAX_X), rand(MAX_Y/2..MAX_Y), rand(360), rand(50..120), 0, 0, 0,0)
+    @quarry = Bug.new(rand(0..MAX_X), rand(0..MAX_Y), rand(360), 90, 0, 0, 0,0)
   end
 end
