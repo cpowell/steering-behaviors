@@ -57,7 +57,7 @@ class AlignState < BasicGameState
   def update(container, game, delta)
     delta_s = delta / 1000.0
 
-    steering_force = SteeringBehaviors::Align.steer(@hunter, @quarry, 0.02)
+    steering_force = SteeringBehaviors::Align.steer(@hunter, @quarry, 0.02, 8)
     SteeringBehaviors::Steering.feel_the_force(@hunter, steering_force, delta_s)
     @hunter.move(delta_s)
     @quarry.move(delta_s)
