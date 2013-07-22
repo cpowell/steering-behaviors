@@ -55,6 +55,7 @@ class StartupState < BasicGameState
     graphics.draw_string("(Type 'a' to arrive)", 8, container.height - 280)
     graphics.draw_string("(Type 'e' to evade)", 8, container.height - 300)
     graphics.draw_string("(Type 'g' to align)", 8, container.height - 320)
+    graphics.draw_string("(Type 'm' to match)", 8, container.height - 340)
   end
 
   # Notification that a key was released
@@ -78,6 +79,8 @@ class StartupState < BasicGameState
       @game.enterState(EvadeState::ID, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
     elsif key==Input::KEY_G
       @game.enterState(AlignState::ID, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
+    elsif key==Input::KEY_M
+      @game.enterState(MatchState::ID, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
     elsif key==Input::KEY_ESCAPE
       @container.exit
     end
