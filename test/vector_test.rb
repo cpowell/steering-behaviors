@@ -292,6 +292,22 @@ class VectorTest < MiniTest::Unit::TestCase
     assert_in_delta(0, v3.y, 0.0001)
   end
 
+  def test_rotate_never_returns_negative_rads
+    assert_equal(0, @v.radians)
+
+    new_vec = @v.rotate(-Math::PI/2)
+    assert_equal(3.0/2*Math::PI, new_vec.radians)
+
+    new_vec.rotate!(-Math::PI)
+    assert_in_delta(Math::PI/2.0, new_vec.radians, 0.0001)
+
+    new_vec.rotate!(2.0*Math::PI)
+    assert_in_delta(Math::PI/2.0, new_vec.radians, 0.0001)
+
+    new_vec.rotate!(-2.0*Math::PI)
+    assert_in_delta(Math::PI/2.0, new_vec.radians, 0.0001)
+  end
+
   def test_degree_to_radian_conversion
     assert_equal Math::PI/4, SteeringBehaviors::Vector.deg2rad(45)
     assert_equal Math::PI/2, SteeringBehaviors::Vector.deg2rad(90)

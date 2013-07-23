@@ -126,7 +126,6 @@ class SteeringBehaviors::Vector
   end
 
   def rotate(radians)
-    # puts "Rotating #{radians}"
     circle_cos = Math.cos(-radians)
     circle_sin = Math.sin(-radians)
 
