@@ -5,6 +5,7 @@ require 'steering_behaviors/common.rb'
 
 require 'steering_behaviors/align.rb'
 require 'steering_behaviors/arrive.rb'
+require 'steering_behaviors/broadside.rb'
 require 'steering_behaviors/evade.rb'
 require 'steering_behaviors/flee.rb'
 require 'steering_behaviors/match.rb'

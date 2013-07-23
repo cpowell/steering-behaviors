@@ -15,6 +15,7 @@ require 'arrive_state'
 require 'evade_state'
 require 'align_state'
 require 'match_state'
+require 'broadside_state'
 require 'steering_behaviors'
 
 class Game < StateBasedGame
@@ -53,6 +54,7 @@ class Game < StateBasedGame
     addState EvadeState.new
     addState AlignState.new
     addState MatchState.new
+    addState BroadsideState.new
   end
 end
 
