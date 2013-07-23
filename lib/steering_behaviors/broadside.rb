@@ -9,15 +9,16 @@ class SteeringBehaviors::Broadside
   #   -
   #
   def self.steer(hunter_kinematic, quarry_kinematic)
-    desired_velocity = (quarry_kinematic.position_vec - hunter_kinematic.position_vec).normalize * hunter_kinematic.max_speed
+    to_quarry = (quarry_kinematic.position_vec - hunter_kinematic.position_vec).normalize
+    option_a = to_quarry.rotate(Math::PI/2)
+    option_b = to_quarry.rotate(-Math::PI/2)
 
-    a = desired_velocity.rotate(Math::PI/2)
-    b = desired_velocity.rotate(-Math::PI/2)
+    course_diff_a = ( ( quarry_kinematic.heading_vec.radians - option_a.radians + 3*Math::PI ) % (2*Math::PI) ) - Math::PI
+    course_diff_b = ( ( quarry_kinematic.heading_vec.radians - option_b.radians + 3*Math::PI ) % (2*Math::PI) ) - Math::PI
 
-    diff_a = hunter_kinematic.heading_vec.radians - a.radians
-    diff_b = hunter_kinematic.heading_vec.radians - b.radians
+    desired = (course_diff_a < course_diff_b ? option_a : option_b)
 
-    (diff_a < diff_b ? a : b)
+    desired * 20
   end
 
 end
