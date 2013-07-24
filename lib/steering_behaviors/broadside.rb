@@ -10,8 +10,8 @@ class SteeringBehaviors::Broadside
   #
   def self.steer(hunter_kinematic, quarry_kinematic)
     to_quarry = (quarry_kinematic.position_vec - hunter_kinematic.position_vec).normalize
-    option_a = to_quarry.rotate(Math::PI/2)
-    option_b = option_a.rotate(Math::PI)
+    option_a = SteeringBehaviors::Vector.new(to_quarry.y, -to_quarry.x)
+    option_b = SteeringBehaviors::Vector.new(-to_quarry.y, to_quarry.x)
 
     da = option_a.delta(hunter_kinematic.heading_vec)
     db = option_b.delta(hunter_kinematic.heading_vec)
