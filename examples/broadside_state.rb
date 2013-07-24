@@ -101,7 +101,8 @@ class BroadsideState < BasicGameState
   def render(container, game, g)
     g.setColor(Color.white)
     g.draw_string("Broadsiding (p to pause, r to randomize, ESC to exit)", 8, container.height - 30)
-    g.draw_string(@hunter.velocity_vec.length.to_i.to_s, @hunter.position_vec.x, @hunter.position_vec.y)
+    data = sprintf("Crs %.2f\nSpd %2.0f", @hunter.velocity_vec.radians, @hunter.velocity_vec.length)
+    g.draw_string(data, @hunter.position_vec.x+10, @hunter.position_vec.y+10)
 
     g.setColor(Color.green)
     g.draw(@hunter_img)
@@ -141,6 +142,6 @@ class BroadsideState < BasicGameState
 
   # Place the quarry somewhere random...
   def randomize_target
-    @quarry = Bug.new(rand(0..MAX_X), rand(0..MAX_Y), rand(360),200, 0, 0, 0,0)
+    @quarry = Bug.new(rand(0..MAX_X), rand(0..MAX_Y), rand(360), 25, 0, 0, 0,0)
   end
 end
