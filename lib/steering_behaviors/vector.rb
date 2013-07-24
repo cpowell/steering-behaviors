@@ -39,6 +39,10 @@ class SteeringBehaviors::Vector
     SteeringBehaviors::Vector.new(@x - v.x, @y - v.y)
   end
 
+  def delta(other)
+    (( ( other.radians - self.radians + Math::PI + 2*Math::PI ) % (2*Math::PI) ) - Math::PI).abs
+  end
+
   def normalize!
     orig_length = length
     return self if orig_length == 1.0 || orig_length == 0

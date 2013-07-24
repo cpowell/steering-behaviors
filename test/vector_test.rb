@@ -82,6 +82,25 @@ class VectorTest < MiniTest::Unit::TestCase
     assert_equal(2.5, @v.length)
   end
 
+  def test_delta
+    other = SteeringBehaviors::Vector.new(1.0, 0)
+    assert_equal(Math::PI/2, @v.delta(other))
+
+    assert_equal(Math::PI/2, other.delta(@v))
+
+    other = SteeringBehaviors::Vector.new(0.1, 1.0)
+    assert_in_delta(0.1, other.delta(@v), 0.01)
+
+    other = SteeringBehaviors::Vector.new(-0.1, 1.0)
+    assert_in_delta(0.1, other.delta(@v), 0.01)
+
+    other = SteeringBehaviors::Vector.new(-0.1, -1.0)
+    assert_in_delta(3.04, other.delta(@v), 0.01)
+
+    other = SteeringBehaviors::Vector.new(0.1, -1.0)
+    assert_in_delta(3.04, other.delta(@v), 0.01)
+  end
+
   def test_bang_normalization
     res=@v.normalize!
     assert_equal(@v, res)
