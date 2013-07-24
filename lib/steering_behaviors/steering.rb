@@ -28,17 +28,18 @@ class SteeringBehaviors::Steering
       direction    = SteeringBehaviors::Vector.sign(kinematic.velocity_vec, desired_velocity) # -1==CCW, 1==CW
       limited_crse = kinematic.heading_vec.radians - max_course_change * direction
 
-      kinematic.velocity_vec = SteeringBehaviors::Vector.new(
-        Math.sin(limited_crse) * desired_velocity.length,
-        Math.cos(limited_crse) * desired_velocity.length
-      )
-
-      # printf "Desired course change %0.4f %s exceeds %0.4f allowable. Desired course [%0.4f], limited course [%0.4f]\n",
+      # printf "Current %0.4f. Angle %0.4f %s exceeds max change %0.4f. Desired course [%0.4f], limited course [%0.4f]\n",
+      #   kinematic.heading_vec.radians,
       #   angle,
-      #   (direction==1 ? 'clockwise' : 'counter-clockwise'),
+      #   (direction==1 ? 'CW' : 'CCW'),
       #   max_course_change,
       #   desired_velocity.radians,
       #   limited_crse
+
+      kinematic.velocity_vec = SteeringBehaviors::Vector.new(
+        Math.sin(limited_crse) * kinematic.speed,
+        Math.cos(limited_crse) * kinematic.speed
+      )
     else
       kinematic.velocity_vec = desired_velocity
     end
