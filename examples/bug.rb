@@ -23,16 +23,15 @@ class Bug
 
     @position_vec = SteeringBehaviors::Vector.new(x, y) # A non-normalized vector holding X,Y position
 
-    @mass            = mass
-    @max_turn        = max_turn
-    @min_speed       = min_speed
-    @max_speed       = max_speed
+    @mass      = mass
+    @max_turn  = max_turn
+    @min_speed = min_speed
+    @max_speed = max_speed
 
     @steering_target = SteeringBehaviors::Vector.new(0, 1.0) # relative to me; i.e. straight ahead
 
     # We could, in theory, handle 'pointing in one direction while moving in another.'
-    # (Think of the spaceship in _Asteroids_.) In this simulation we don't bother,
-    # but we support such capability.
+    # (Think of the spaceship in _Asteroids_, or "strafing" in a shooter.)
 
     @velocity_vec = SteeringBehaviors::Vector.new # A non-normalized vector implying direction AND speed.
     @velocity_vec.x = speed * Math.sin(SteeringBehaviors::Vector.deg2rad(course))
