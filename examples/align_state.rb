@@ -31,7 +31,7 @@ class AlignState < BasicGameState
   def init(container, game)
     @container = container
 
-    @hunter = Bug.new(MAX_X/8, MAX_Y/8, 135, 100, 0.1, 1.7854, 50, 150)
+    @hunter = Bug.new(MAX_X/8, MAX_Y/8, 135, 100, 0.1, 0.698, 50, 150)
     @hunter_img = Circle.new(@hunter.position_vec.x, @hunter.position_vec.y, 5)
 
     randomize_target
@@ -58,7 +58,7 @@ class AlignState < BasicGameState
     delta_s = delta / 1000.0
 
     steering_force = SteeringBehaviors::Align.steer(@hunter, @quarry)
-    SteeringBehaviors::Steering.feel_the_force(@hunter, steering_force, delta_s)
+    SteeringBehaviors::Steering.feel_the_force(@hunter, steering_force, delta_s, false)
     @hunter.move(delta_s)
     @quarry.move(delta_s)
 
@@ -101,6 +101,7 @@ class AlignState < BasicGameState
   def render(container, game, g)
     g.setColor(Color.white)
     g.draw_string("Aligning (p to pause, r to randomize, ESC to exit)", 8, container.height - 30)
+    g.draw_string(@hunter.velocity_vec.length.to_i.to_s, @hunter.position_vec.x, @hunter.position_vec.y)
 
     g.setColor(Color.green)
     g.draw(@hunter_img)
