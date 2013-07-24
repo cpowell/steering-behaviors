@@ -101,7 +101,8 @@ class AlignState < BasicGameState
   def render(container, game, g)
     g.setColor(Color.white)
     g.draw_string("Aligning (p to pause, r to randomize, ESC to exit)", 8, container.height - 30)
-    g.draw_string(@hunter.velocity_vec.length.to_i.to_s, @hunter.position_vec.x, @hunter.position_vec.y)
+    data = sprintf("Crs %.2f\nSpd %2.0f", @hunter.velocity_vec.radians, @hunter.velocity_vec.length)
+    g.draw_string(data, @hunter.position_vec.x+10, @hunter.position_vec.y+10)
 
     g.setColor(Color.green)
     g.draw(@hunter_img)

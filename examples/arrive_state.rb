@@ -101,6 +101,8 @@ class ArriveState < BasicGameState
 
     g.setColor(Color.white)
     g.draw_string("Arriving (r to randomize target, p to pause, ESC to exit)", 8, container.height - 30)
+    data = sprintf("Crs %.2f\nSpd %2.0f", @bug.velocity_vec.radians, @bug.velocity_vec.length)
+    g.draw_string(data, @bug.position_vec.x+10, @bug.position_vec.y+10)
 
     g.setColor(Color.green)
     g.draw(@bug_img)
