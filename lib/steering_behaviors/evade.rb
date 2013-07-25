@@ -17,9 +17,7 @@ class SteeringBehaviors::Evade
   #   - +evading_kinematic+ -> evading kinematic
   #   - +enemy_kinematic+ -> kinematic of the thing to evade
   # * *Returns* :
-  #   -
-  # * *Raises* :
-  #   - ++ ->
+  #   - a steering force
   #
   def self.steer(evading_kinematic, enemy_kinematic)
     offset          = enemy_kinematic.position_vec - evading_kinematic.position_vec

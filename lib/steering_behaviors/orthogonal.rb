@@ -8,10 +8,10 @@
 
 class SteeringBehaviors::Orthogonal
 
-  # Align with a moving target by observing its course.
+  # Moves at a 90-degree angle to the target's course.
   #
   # * *Args*    :
-  #   - +hunter_kinematic+ -> pursuing kinematic
+  #   - +hunter_kinematic+ -> my moving thing
   #   - +quarry_kinematic+ -> kinematic of the target
   # * *Returns* :
   #   -

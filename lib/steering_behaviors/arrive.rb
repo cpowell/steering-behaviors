@@ -7,15 +7,15 @@
 # the terms found in the "LICENSE" file included with the framework.
 
 class SteeringBehaviors::Arrive
-  #
+
+  # Arrive 'gently' at the goal position by decelerating smoothly.
   #
   # * *Args*    :
-  #   - ++ ->
+  #   - +kinematic+ -> the thing that is moving and arriving
+  #   - +goal_position+ -> a Vector of position
   #   - +gentleness+ -> higher values will make the arrival more gradual and 'gentle'
   # * *Returns* :
-  #   -
-  # * *Raises* :
-  #   - ++ ->
+  #   - a steering force
   #
   def self.steer(kinematic, goal_position, gentleness=0.8)
     to_target = goal_position - kinematic.position_vec

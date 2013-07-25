@@ -7,11 +7,13 @@
 # the terms found in the "LICENSE" file included with the framework.
 
 class SteeringBehaviors::Wander
+
   # Wander about in a 'random walk' way. Speeds up and slows down, too.
   # See http://www.red3d.com/cwr/steer/
   #
   # * *Args*    :
-  #   - ++ -> how erratic the wandering effect will be
+  #   - +kinematic+ -> the wandering thing
+  #   - +erraticism+ -> how erratic the wandering effect will be
   # * *Returns* :
   #   - the calculated steering force
   #

@@ -8,13 +8,13 @@
 
 class SteeringBehaviors::Match
 
-  # Align with a moving target by observing its course.
+  # Matches the target's course and speed.
   #
   # * *Args*    :
-  #   - +hunter_kinematic+ -> pursuing kinematic
+  #   - +hunter_kinematic+ -> my moving thing
   #   - +quarry_kinematic+ -> kinematic of the target
   # * *Returns* :
-  #   -
+  #   - the steering force
   #
   def self.steer(hunter_kinematic, quarry_kinematic)
     course_diff = ( ( quarry_kinematic.heading_vec.radians - hunter_kinematic.heading_vec.radians + 3*Math::PI ) % (2*Math::PI) ) - Math::PI

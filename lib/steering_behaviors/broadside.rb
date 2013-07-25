@@ -8,13 +8,14 @@
 
 class SteeringBehaviors::Broadside
 
-  # Align with a moving target by observing its course.
+  # Always face one's side (i.e. a ship's broadside) to the target. Can be used for
+  # exposing weapons, orbiting, etc.
   #
   # * *Args*    :
   #   - +hunter_kinematic+ -> pursuing kinematic
   #   - +quarry_kinematic+ -> kinematic of the target
   # * *Returns* :
-  #   -
+  #   - a steering force
   #
   def self.steer(hunter_kinematic, quarry_kinematic)
     to_quarry = (quarry_kinematic.position_vec - hunter_kinematic.position_vec).normalize

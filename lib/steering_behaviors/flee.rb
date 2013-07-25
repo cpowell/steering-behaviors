@@ -7,10 +7,12 @@
 # the terms found in the "LICENSE" file included with the framework.
 
 class SteeringBehaviors::Flee
+
   # Flee a specific position via the best possible route.
   # See http://www.red3d.com/cwr/steer/
   #
   # * *Args*    :
+  #   - +kinematic+ -> the thing that is fleeing
   #   - +flee_position+ -> the position-vector that we want to flee from
   # * *Returns* :
   #   - the calculated steering force

@@ -8,6 +8,15 @@
 
 module SteeringBehaviors::Common
 
+  # A support routine used by Pursue and Evade. Observes how 'forward' the
+  # target is, and how 'parallel' its course is to our own.
+  #
+  # * *Args*    :
+  #   - +forwardness+ -> how forward a target is to the observer
+  #   - +parallelness+ -> how parallel the target's course is to the observer's
+  # * *Returns* :
+  #   - array of [general language description, steering force]
+  #
   def compute_time_factor(forwardness, parallelness)
     f = interval_comparison(forwardness,  -0.707, 0.707)
     p = interval_comparison(parallelness, -0.707, 0.707)

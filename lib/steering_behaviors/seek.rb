@@ -12,7 +12,7 @@ class SteeringBehaviors::Seek
   # See http://www.red3d.com/cwr/steer/
   #
   # * *Args*    :
-  #   - +kinematic+ ->
+  #   - +kinematic+ -> my seeking thing
   #   - +goal_position+ -> the position-vector where we want to go
   # * *Returns* :
   #   - the calculated steering force
