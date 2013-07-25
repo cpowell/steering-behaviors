@@ -66,7 +66,9 @@ Then, to run the examples:
 ./examples/run_examples.sh
 ```
 
-Note, the examples are not DRY at all; this is by design. They are intended to each be somewhat self-contained and readable without you having to flip between too many files to gain an understanding of what is going on.
+Note that JRuby is not a dependency for the Steering Behaviors themselves, only for the bundled examples which rely on JRuby / Slick2D for animation.
+
+By the way, the examples are not DRY at all and are highly repetitive from one example to the next; this is by design. They are intended to each be somewhat self-contained and readable without you having to flip between too many files to gain an understanding of what is going on.
 
 ## References used in the creation of this software
 * "Autonomous Behaviors for Autonomous Characters" by Craig Reynolds [(Explanation and demos)](http://www.red3d.com/cwr/steer/)
