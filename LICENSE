@@ -1,4 +1,4 @@
-Copyright 2012, Prylis Incorporated.
+Copyright 2013, Prylis Incorporated.
 
 Please contact the author <cpowell@prylis.com> for questions about licensing or for specific
 licensing needs.
@@ -16,7 +16,8 @@ A copy of the GNU Lesser General Public License is at the end of this file, or  
 
 ----
 
-The examples (*only* the examples) provided in the Ruby Steering Behaviors Library depend on LWJGL and Slick2D to operate. These products have their own licenses as follows.
+The examples (*only* the examples) provided in the Ruby Steering Behaviors Library source code
+repository depend on LWJGL and Slick2D to operate. These products have their own licenses as follows.
 
 The Slick2D license:
   Copyright (c) 2012, Slick 2D All rights reserved.

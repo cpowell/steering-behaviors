@@ -1,12 +1,17 @@
-class Bug
-  attr_reader :course, :speed, :mass
-  attr_reader :heading_vec, :velocity_vec, :position_vec
+##
+# Copyright 2013, Prylis Incorporated.
+#
+# This file is part of The Ruby Steering Behaviors Library.
+# http://github.com/cpowell/steering-behaviors
+# You can redistribute and/or modify this software only in accordance with
+# the terms found in the "LICENSE" file included with the framework.
 
+class Bug
+  attr_reader :mass, :heading_vec, :velocity_vec, :position_vec
   attr_accessor :min_speed, :max_speed, :max_turn
   attr_accessor :steering_target
 
-  # World units!
-  # Currently meters and meters-per-second
+  # The 'bug' is the little moving creature that steers on-screen.
   #
   # * *Args*    :
   #   - +x+ -> starting X pos
