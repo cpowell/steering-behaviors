@@ -58,7 +58,7 @@ class BroadsideState < BasicGameState
     delta_s = delta / 1000.0
 
     steering_force = SteeringBehaviors::Broadside.steer(@hunter, @quarry)
-    SteeringBehaviors::Steering.feel_the_force(@hunter, steering_force, delta_s, false)
+    SteeringBehaviors::Steering.feel_the_force(@hunter, steering_force, delta_s)
     @hunter.move(delta_s)
     @quarry.move(delta_s)
 

@@ -16,9 +16,8 @@ class SteeringBehaviors::Steering
   #   - +kinematic+ -> the kinematic thing
   #   - +steering_force+ -> force vector supplied by a steering behavior
   #   - +delta+ -> time delta (in seconds) used for scaling the result
-  #   - +accelerative+ -> whether you want the steering to change the thing's velocity (default true)
   #
-  def self.feel_the_force(kinematic, steering_force, delta, accelerative=true) #, mobile, position)
+  def self.feel_the_force(kinematic, steering_force, delta)
     acceleration = steering_force / kinematic.mass
 
     # Compute the new, proposed velocity vector.
