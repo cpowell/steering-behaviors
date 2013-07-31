@@ -7,11 +7,19 @@
 # the terms found in the "LICENSE" file included with the framework.
 
 class SteeringBehaviors::Vector
+  TWOPI   = 6.283185307179586
+  THREEPI = 9.42477796076938
+
   attr_reader :x, :y
 
   def initialize(x=0,y=0)
     @x = x.to_f
     @y = y.to_f
+  end
+
+  def clear_cache
+    @length = nil
+    @radians = nil
   end
 
   def ==(other)
@@ -21,14 +29,17 @@ class SteeringBehaviors::Vector
 
   def x=(x)
     @x = x.to_f
+    clear_cache
   end
 
   def y=(y)
     @y = y.to_f
+    clear_cache
   end
 
   def length
-    Math.sqrt(@x**2 + @y**2)
+    # @length || @length = Math...
+    @length ||= Math.sqrt(@x**2 + @y**2)
   end
 
   def +(v)
@@ -48,7 +59,7 @@ class SteeringBehaviors::Vector
   end
 
   def delta(other)
-    (( ( other.radians - self.radians + Math::PI + 2*Math::PI ) % (2*Math::PI) ) - Math::PI).abs
+    (( ( other.radians - self.radians + THREEPI ) % (TWOPI) ) - Math::PI).abs
   end
 
   def normalize!
@@ -57,6 +68,7 @@ class SteeringBehaviors::Vector
 
     @x /= orig_length
     @y /= orig_length
+    clear_cache
 
     self
   end
@@ -112,21 +124,25 @@ class SteeringBehaviors::Vector
   end
 
   def radians
-    theta = Math.acos(@y/length)
-    if @x < 0
-      theta *= -1
-    end
+    @radians ||= lambda do |x, y|
+      theta = Math.acos(y/length)
+      if x < 0
+        theta *= -1
+      end
 
-    theta % (2 * Math::PI)
+      return theta % (TWOPI)
+    end.call(@x, @y)
   end
 
   def from_compass_bearing!(brg)
     rad = SteeringBehaviors::Vector.deg2rad(brg)
     self.x = Math.sin(rad)
     self.y = Math.cos(rad)
+    clear_cache
   end
 
   def rotate!(radians)
+    clear_cache
     circle_cos = Math.cos(-radians)
     circle_sin = Math.sin(-radians)
 
