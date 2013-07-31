@@ -26,6 +26,8 @@ class SteeringBehaviors::Orthogonal
     best_hdg_vec = (da < db ? option_a : option_b)
 
     desired_velocity = best_hdg_vec * hunter_kinematic.velocity_vec.length
+
+    return desired_velocity - hunter_kinematic.velocity_vec
   end
 
 end
