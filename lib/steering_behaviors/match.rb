@@ -17,12 +17,9 @@ class SteeringBehaviors::Match
   #   - the steering force
   #
   def self.steer(hunter_kinematic, quarry_kinematic)
-    course_diff = ( ( quarry_kinematic.heading_vec.radians - hunter_kinematic.heading_vec.radians + 3*Math::PI ) % (2*Math::PI) ) - Math::PI
+    desired_velocity = quarry_kinematic.heading_vec * quarry_kinematic.velocity_vec.length
 
-    speed_diff = quarry_kinematic.speed - hunter_kinematic.speed
-
-    target_local = SteeringBehaviors::Vector.new(course_diff * quarry_kinematic.speed, speed_diff)
-    target_local.rotate!(hunter_kinematic.heading_vec.radians)
+    return desired_velocity - hunter_kinematic.velocity_vec
   end
 
 end
