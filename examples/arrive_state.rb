@@ -138,6 +138,6 @@ class ArriveState < BasicGameState
   end
 
   def randomize_target
-    @target_pos = SteeringBehaviors::Vector.new(rand(MAX_X/2..MAX_X), rand(MAX_Y/2..MAX_Y))
+    @target_pos = SteeringBehaviors::Vector.new(rand(0..MAX_X), rand(0..MAX_Y))
   end
 end
