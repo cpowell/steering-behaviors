@@ -14,8 +14,8 @@ class SteeringBehaviors::Evade
   # See http://www.red3d.com/cwr/steer/
   #
   # * *Args*    :
-  #   - +evading_kinematic+ -> evading kinematic
-  #   - +enemy_kinematic+ -> kinematic of the thing to evade
+  #   - +evading_kinematic+ -> kinematic of the thing that is maneuvering to evade
+  #   - +enemy_kinematic+ -> kinematic of the thing I'm trying to evade
   # * *Returns* :
   #   - a steering force
   #

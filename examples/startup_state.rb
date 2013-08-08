@@ -58,6 +58,7 @@ class StartupState < BasicGameState
     graphics.draw_string("(Type 'm' to match)", 8, container.height - 340)
     graphics.draw_string("(Type 'b' to broadside)", 8, container.height - 360)
     graphics.draw_string("(Type 'o' to orthogonal)", 8, container.height - 380)
+    graphics.draw_string("(Type 'r' to separate)", 8, container.height - 400)
   end
 
   # Notification that a key was released
@@ -87,6 +88,8 @@ class StartupState < BasicGameState
       @game.enterState(BroadsideState::ID, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
     elsif key==Input::KEY_O
       @game.enterState(OrthogonalState::ID, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
+    elsif key==Input::KEY_R
+      @game.enterState(SeparationState::ID, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
     elsif key==Input::KEY_ESCAPE
       @container.exit
     end

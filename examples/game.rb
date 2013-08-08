@@ -7,16 +7,19 @@
 # the terms found in the "LICENSE" file included with the framework.
 
 require 'startup_state'
-require 'wander_state'
-require 'seek_state'
-require 'flee_state'
-require 'pursue_state'
-require 'arrive_state'
-require 'evade_state'
+
 require 'align_state'
-require 'match_state'
+require 'arrive_state'
 require 'broadside_state'
+require 'evade_state'
+require 'flee_state'
+require 'match_state'
 require 'orthogonal_state'
+require 'pursue_state'
+require 'seek_state'
+require 'separation_state'
+require 'wander_state'
+
 require 'steering_behaviors'
 
 class Game < StateBasedGame
@@ -47,16 +50,18 @@ class Game < StateBasedGame
 
     # The order you add them is important; starting state must be first.
     addState StartupState.new
-    addState WanderState.new
-    addState SeekState.new
-    addState FleeState.new
-    addState PursueState.new
-    addState ArriveState.new
-    addState EvadeState.new
+
     addState AlignState.new
-    addState MatchState.new
+    addState ArriveState.new
     addState BroadsideState.new
+    addState EvadeState.new
+    addState FleeState.new
+    addState MatchState.new
     addState OrthogonalState.new
+    addState PursueState.new
+    addState SeekState.new
+    addState SeparationState.new
+    addState WanderState.new
   end
 end
 

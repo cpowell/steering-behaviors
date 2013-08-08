@@ -34,7 +34,6 @@ class SteeringBehaviors::Pursue
     direct_travel_time     = direct_distance / hunter_kinematic.speed
     direct_travel_time_2   = direct_distance / (hunter_kinematic.speed + quarry_kinematic.speed)
     estimated_time_enroute = direct_travel_time_2 * tf
-
     # printf "#{ipos.entity}'s target #{qpos.entity} is '#{gen}'. fness: %0.3f pness: %0.3f f: %0.3f p: %0.3f tf: %0.3f\n", forwardness, parallelness, f, p, tf
     predicted_pos_vec = quarry_kinematic.position_vec + (quarry_kinematic.velocity_vec * estimated_time_enroute)
 

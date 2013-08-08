@@ -29,7 +29,7 @@ class FleeState < BasicGameState
   def init(container, game)
     @container = container
 
-    @bug = Bug.new(MAX_X/8, MAX_Y/8, 135, 100, 0.1, 1.7854, 50, 150)
+    @bug = Bug.new(MAX_X/8, MAX_Y/8, 135, 100, 1.0, 1.7854, 15, 150)
     @bug_img = Circle.new(@bug.position_vec.x, @bug.position_vec.y, 5)
 
     randomize_target
@@ -54,7 +54,7 @@ class FleeState < BasicGameState
     delta_s = delta / 1000.0
 
     steering_force = SteeringBehaviors::Flee.steer(@bug, @target_pos)
-    SteeringBehaviors::Steering.feel_the_force(@bug, steering_force, delta_s)
+    SteeringBehaviors::Steering.feel_the_force(@bug, steering_force, delta_s, false)
     @bug.move(delta_s)
 
     # Wrap at edges
