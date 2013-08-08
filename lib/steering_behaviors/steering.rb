@@ -17,12 +17,14 @@ class SteeringBehaviors::Steering
   #   - +steering_force+ -> force vector supplied by a steering behavior
   #   - +delta+ -> time delta (in seconds) used for scaling the result
   #
-  def self.feel_the_force(kinematic, steering_force, delta)
+  def self.feel_the_force(kinematic, steering_force, delta, accelerative=true)
+    return if steering_force.nil?
+
     acceleration = steering_force / kinematic.mass
 
     # Compute the new, proposed velocity vector.
     desired_velocity = kinematic.velocity_vec + (acceleration * delta)
-
+    desired_velocity.truncate!(kinematic.speed) if !accelerative
     desired_velocity.truncate!(kinematic.max_speed)
 
     # If this timeslice's proposed velocity-vector exceeds the turn rate,
