@@ -12,13 +12,13 @@ class SteeringBehaviors::Flee
   # See http://www.red3d.com/cwr/steer/
   #
   # * *Args*    :
-  #   - +kinematic+ -> the thing that is fleeing
+  #   - +character_kinematic+ -> kinematic of "our" character that is moving and fleeing
   #   - +flee_position+ -> the position-vector that we want to flee from
   # * *Returns* :
   #   - the calculated steering force
   #
-  def self.steer(kinematic, flee_position)
-    desired_velocity = (kinematic.position_vec - flee_position).normalize * kinematic.max_speed
-    force = (desired_velocity - kinematic.velocity_vec)
+  def self.steer(character_kinematic, flee_position)
+    desired_velocity = (character_kinematic.position_vec - flee_position).normalize * character_kinematic.max_speed
+    force = (desired_velocity - character_kinematic.velocity_vec)
   end
 end

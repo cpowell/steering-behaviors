@@ -12,15 +12,15 @@ class SteeringBehaviors::Wander
   # See http://www.red3d.com/cwr/steer/
   #
   # * *Args*    :
-  #   - +kinematic+ -> the wandering thing
+  #   - +character_kinematic+ -> kinematic of "our" character that is moving and wandering
   #   - +erraticism+ -> how erratic the wandering effect will be
   # * *Returns* :
-  #   - the calculated steering force
+  #   - the steering force
   #
-  def self.steer(kinematic, erraticism)
-    kinematic.steering_target += SteeringBehaviors::Vector.new(rand(-1.0..1.0)*erraticism, rand(-1.0..1.0)*erraticism)
-    kinematic.steering_target.normalize!
+  def self.steer(character_kinematic, erraticism)
+    character_kinematic.steering_target += SteeringBehaviors::Vector.new(rand(-1.0..1.0)*erraticism, rand(-1.0..1.0)*erraticism)
+    character_kinematic.steering_target.normalize!
 
-    kinematic.steering_target.rotate(kinematic.heading_vec.radians)
+    character_kinematic.steering_target.rotate(character_kinematic.heading_vec.radians)
   end
 end

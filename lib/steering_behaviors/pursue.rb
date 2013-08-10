@@ -14,30 +14,28 @@ class SteeringBehaviors::Pursue
   # See http://www.red3d.com/cwr/steer/
   #
   # * *Args*    :
-  #   - +hunter_kinematic+ -> pursuing kinematic
-  #   - +quarry_kinematic+ -> kinematic of the target
+  #   - +character_kinematic+ -> kinematic of "our" character that is moving and pursuing
+  #   - +other_kinematic+ -> kinematic of the thing to pursue
   # * *Returns* :
-  #   -
-  # * *Raises* :
-  #   - ++ ->
+  #   - a steering force
   #
-  def self.steer(hunter_kinematic, quarry_kinematic)
-    offset          = quarry_kinematic.position_vec - hunter_kinematic.position_vec
+  def self.steer(character_kinematic, other_kinematic)
+    offset          = other_kinematic.position_vec - character_kinematic.position_vec
     direct_distance = offset.length
     unit_offset     = offset / direct_distance
 
-    parallelness = hunter_kinematic.heading_vec.dot(quarry_kinematic.heading_vec)
-    forwardness  = unit_offset.dot(hunter_kinematic.heading_vec)
+    parallelness = character_kinematic.heading_vec.dot(other_kinematic.heading_vec)
+    forwardness  = unit_offset.dot(character_kinematic.heading_vec)
 
     gen, tf = compute_time_factor(forwardness, parallelness)
 
-    direct_travel_time     = direct_distance / hunter_kinematic.speed
-    direct_travel_time_2   = direct_distance / (hunter_kinematic.speed + quarry_kinematic.speed)
+    direct_travel_time     = direct_distance / character_kinematic.speed
+    direct_travel_time_2   = direct_distance / (character_kinematic.speed + other_kinematic.speed)
     estimated_time_enroute = direct_travel_time_2 * tf
     # printf "#{ipos.entity}'s target #{qpos.entity} is '#{gen}'. fness: %0.3f pness: %0.3f f: %0.3f p: %0.3f tf: %0.3f\n", forwardness, parallelness, f, p, tf
-    predicted_pos_vec = quarry_kinematic.position_vec + (quarry_kinematic.velocity_vec * estimated_time_enroute)
+    predicted_pos_vec = other_kinematic.position_vec + (other_kinematic.velocity_vec * estimated_time_enroute)
 
-    return [predicted_pos_vec, SteeringBehaviors::Seek.steer(hunter_kinematic, predicted_pos_vec)]
+    return [predicted_pos_vec, SteeringBehaviors::Seek.steer(character_kinematic, predicted_pos_vec)]
   end
 
 

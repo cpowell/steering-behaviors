@@ -11,15 +11,15 @@ class SteeringBehaviors::Match
   # Matches the target's course and speed.
   #
   # * *Args*    :
-  #   - +hunter_kinematic+ -> my moving thing
-  #   - +quarry_kinematic+ -> kinematic of the target
+  #   - +character_kinematic+ -> kinematic of "our" character that is moving and matching
+  #   - +other_kinematic+ -> kinematic of the thing to match
   # * *Returns* :
   #   - the steering force
   #
-  def self.steer(hunter_kinematic, quarry_kinematic)
-    desired_velocity = quarry_kinematic.heading_vec * quarry_kinematic.velocity_vec.length
+  def self.steer(character_kinematic, other_kinematic)
+    desired_velocity = other_kinematic.heading_vec * other_kinematic.velocity_vec.length
 
-    return desired_velocity - hunter_kinematic.velocity_vec
+    return desired_velocity - character_kinematic.velocity_vec
   end
 
 end

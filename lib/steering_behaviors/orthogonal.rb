@@ -11,23 +11,23 @@ class SteeringBehaviors::Orthogonal
   # Moves at a 90-degree angle to the target's course.
   #
   # * *Args*    :
-  #   - +hunter_kinematic+ -> my moving thing
-  #   - +quarry_kinematic+ -> kinematic of the target
+  #   - +character_kinematic+ -> kinematic of "our" character that is moving
+  #   - +other_kinematic+ -> kinematic of the thing to match
   # * *Returns* :
-  #   -
+  #   - a steering force
   #
-  def self.steer(hunter_kinematic, quarry_kinematic)
-    option_a = SteeringBehaviors::Vector.new(quarry_kinematic.heading_vec.y, -quarry_kinematic.heading_vec.x)
-    option_b = SteeringBehaviors::Vector.new(-quarry_kinematic.heading_vec.y, quarry_kinematic.heading_vec.x)
+  def self.steer(character_kinematic, other_kinematic)
+    option_a = SteeringBehaviors::Vector.new(other_kinematic.heading_vec.y, -other_kinematic.heading_vec.x)
+    option_b = SteeringBehaviors::Vector.new(-other_kinematic.heading_vec.y, other_kinematic.heading_vec.x)
 
-    da = option_a.delta(hunter_kinematic.heading_vec)
-    db = option_b.delta(hunter_kinematic.heading_vec)
+    da = option_a.delta(character_kinematic.heading_vec)
+    db = option_b.delta(character_kinematic.heading_vec)
 
     best_hdg_vec = (da < db ? option_a : option_b)
 
-    desired_velocity = best_hdg_vec * hunter_kinematic.velocity_vec.length
+    desired_velocity = best_hdg_vec * character_kinematic.velocity_vec.length
 
-    return desired_velocity - hunter_kinematic.velocity_vec
+    return desired_velocity - character_kinematic.velocity_vec
   end
 
 end

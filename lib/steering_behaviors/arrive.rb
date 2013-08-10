@@ -7,31 +7,31 @@
 # the terms found in the "LICENSE" file included with the framework.
 
 class SteeringBehaviors::Arrive
-  TARGET_RADIUS=0
+  TARGET_RADIUS=0 # consider ourselves 'arrived' when we achive this radius
 
   # Arrive 'gently' at the goal position by decelerating smoothly.
   #
   # * *Args*    :
-  #   - +kinematic+ -> the thing that is moving and arriving
-  #   - +goal_position+ -> a Vector of position
-  #   - +slow_radius+ -> don't begin decelerating until inside this radius; max speed outside
+  #   - +character_kinematic+ -> kinematic of "our" character that is moving and arriving
+  #   - +goal_position+ -> a Vector of position at which to arrive
+  #   - +slow_radius+ -> don't begin decelerating until inside this radius; maintain max speed outside
   # * *Returns* :
   #   - a steering force
   #
-  def self.steer(kinematic, goal_position, slow_radius=200)
-    to_target = goal_position - kinematic.position_vec
+  def self.steer(character_kinematic, goal_position, slow_radius=200)
+    to_target = goal_position - character_kinematic.position_vec
     dist = to_target.length
 
     if dist < TARGET_RADIUS
       return SteeringBehaviors::Vector.new(0,0)
     elsif dist > slow_radius
-      desired_speed = kinematic.max_speed
+      desired_speed = character_kinematic.max_speed
     else
-      desired_speed = kinematic.max_speed * dist / slow_radius
+      desired_speed = character_kinematic.max_speed * dist / slow_radius
     end
 
     desired_vel = to_target.normalize * desired_speed
 
-    return desired_vel - kinematic.velocity_vec
+    return desired_vel - character_kinematic.velocity_vec
   end
 end

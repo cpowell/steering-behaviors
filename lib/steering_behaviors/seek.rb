@@ -12,13 +12,13 @@ class SteeringBehaviors::Seek
   # See http://www.red3d.com/cwr/steer/
   #
   # * *Args*    :
-  #   - +kinematic+ -> my seeking thing
-  #   - +goal_position+ -> the position-vector where we want to go
+  #   - +character_kinematic+ -> kinematic of "our" character that is moving and seeking
+  #   - +goal_position+ -> the position-vector that we want to seek
   # * *Returns* :
-  #   - the calculated steering force
+  #   - the steering force
   #
-  def self.steer(kinematic, goal_position)
-    desired_velocity = (goal_position - kinematic.position_vec).normalize * kinematic.max_speed
-    desired_velocity - kinematic.velocity_vec
+  def self.steer(character_kinematic, goal_position)
+    desired_velocity = (goal_position - character_kinematic.position_vec).normalize * character_kinematic.max_speed
+    desired_velocity - character_kinematic.velocity_vec
   end
 end

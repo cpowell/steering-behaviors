@@ -11,15 +11,15 @@ class SteeringBehaviors::Align
   # Align with a moving target by observing its course.
   #
   # * *Args*    :
-  #   - +hunter_kinematic+ -> pursuing kinematic
-  #   - +quarry_kinematic+ -> kinematic of the target
+  #   - +character_kinematic+ -> kinematic of "our" character that is moving and aligning
+  #   - +other_kinematic+ -> kinematic of the thing to align with
   # * *Returns* :
-  #   -
+  #   - a steering force
   #
-  def self.steer(hunter_kinematic, quarry_kinematic)
-    desired_velocity = quarry_kinematic.heading_vec * hunter_kinematic.velocity_vec.length
+  def self.steer(character_kinematic, other_kinematic)
+    desired_velocity = other_kinematic.heading_vec * character_kinematic.velocity_vec.length
 
-    return desired_velocity - hunter_kinematic.velocity_vec
+    return desired_velocity - character_kinematic.velocity_vec
   end
 
 end

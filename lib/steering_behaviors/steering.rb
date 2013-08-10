@@ -13,43 +13,43 @@ class SteeringBehaviors::Steering
   # directly alters the provided Mobile component.
   #
   # * *Args*    :
-  #   - +kinematic+ -> the kinematic thing
+  #   - +character_kinematic+ -> "our" character that is moving
   #   - +steering_force+ -> force vector supplied by a steering behavior
   #   - +delta+ -> time delta (in seconds) used for scaling the result
   #
-  def self.feel_the_force(kinematic, steering_force, delta, accelerative=true)
+  def self.feel_the_force(character_kinematic, steering_force, delta, accelerative=true)
     return if steering_force.nil?
 
-    acceleration = steering_force / kinematic.mass
+    acceleration = steering_force / character_kinematic.mass
 
     # Compute the new, proposed velocity vector.
-    desired_velocity = kinematic.velocity_vec + (acceleration * delta)
-    desired_velocity.truncate!(kinematic.speed) if !accelerative
-    desired_velocity.truncate!(kinematic.max_speed)
+    desired_velocity = character_kinematic.velocity_vec + (acceleration * delta)
+    desired_velocity.truncate!(character_kinematic.speed) if !accelerative
+    desired_velocity.truncate!(character_kinematic.max_speed)
 
     # If this timeslice's proposed velocity-vector exceeds the turn rate,
     # come up with a revised velociy-vec that doesn't exceed the rate -- and use that.
-    angle             = Math.acos kinematic.heading_vec.dot(desired_velocity.normalize)
-    max_course_change = kinematic.max_turn * delta
+    angle             = Math.acos character_kinematic.heading_vec.dot(desired_velocity.normalize)
+    max_course_change = character_kinematic.max_turn * delta
 
     if angle.abs > max_course_change
-      direction    = SteeringBehaviors::Vector.sign(kinematic.velocity_vec, desired_velocity) # -1==CCW, 1==CW
-      limited_crse = kinematic.heading_vec.radians - max_course_change * direction
+      direction    = SteeringBehaviors::Vector.sign(character_kinematic.velocity_vec, desired_velocity) # -1==CCW, 1==CW
+      limited_crse = character_kinematic.heading_vec.radians - max_course_change * direction
 
       # printf "Current %0.4f. Angle %0.4f %s exceeds max change %0.4f. Desired course [%0.4f], limited course [%0.4f]\n",
-      #   kinematic.heading_vec.radians,
+      #   character_kinematic.heading_vec.radians,
       #   angle,
       #   (direction==1 ? 'CW' : 'CCW'),
       #   max_course_change,
       #   desired_velocity.radians,
       #   limited_crse
 
-      kinematic.velocity_vec = SteeringBehaviors::Vector.new(
-        Math.sin(limited_crse) * kinematic.speed,
-        Math.cos(limited_crse) * kinematic.speed
+      character_kinematic.velocity_vec = SteeringBehaviors::Vector.new(
+        Math.sin(limited_crse) * character_kinematic.speed,
+        Math.cos(limited_crse) * character_kinematic.speed
       )
     else
-      kinematic.velocity_vec = desired_velocity
+      character_kinematic.velocity_vec = desired_velocity
     end
   end
 
