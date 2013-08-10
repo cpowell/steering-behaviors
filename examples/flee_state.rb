@@ -54,7 +54,7 @@ class FleeState < BasicGameState
     delta_s = delta / 1000.0
 
     steering_force = SteeringBehaviors::Flee.steer(@bug, @target_pos)
-    SteeringBehaviors::Steering.feel_the_force(@bug, steering_force, delta_s, false)
+    SteeringBehaviors::Steering.feel_the_force(@bug, steering_force, delta_s, true)
     @bug.move(delta_s)
 
     # Wrap at edges
