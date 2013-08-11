@@ -54,8 +54,13 @@ class ArriveState < BasicGameState
   def update(container, game, delta)
     delta_s = delta / 1000.0
 
-    steering_force = SteeringBehaviors::Arrive.steer(@bug, @target_pos, 105)
+    steering_force = SteeringBehaviors::Arrive.steer(@bug, @target_pos, 105, 5)
     SteeringBehaviors::Steering.feel_the_force(@bug, steering_force, delta_s)
+
+    # if (@target_pos.x - @bug.position_vec.x).abs < 10 && (@target_pos.y - @bug.position_vec.y).abs < 10
+    if steering_force == SteeringBehaviors::VEC_ZERO
+      randomize_target
+    end
 
     @bug.move(delta_s)
 
@@ -80,10 +85,6 @@ class ArriveState < BasicGameState
     @steering_force_line.set @bug.position_vec.x, @bug.position_vec.y,
       (steering_force.x + @bug.position_vec.x),
       (steering_force.y + @bug.position_vec.y)
-
-    if (@target_pos.x - @bug.position_vec.x).abs < 10 && (@target_pos.y - @bug.position_vec.y).abs < 10
-      randomize_target
-    end
 
     # printf "Crs: %0.4f  Hdg: %0.4f  Spd: %0.1f\n", @bug.velocity_vec.radians, @bug.heading_vec.radians, @bug.speed
   end
