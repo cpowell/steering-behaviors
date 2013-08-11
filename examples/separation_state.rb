@@ -31,7 +31,7 @@ class SeparationState < BasicGameState
   def init(container, game)
     @container = container
 
-    @character = Bug.new(MAX_X/2, MAX_Y/2, 135, 20, 0.1, 1.7854, 50, 150)
+    @character = Bug.new(MAX_X/2, MAX_Y/2, 135, 20, 0.1, 1.7854, 80, 150)
     @character_img = Circle.new(@character.position_vec.x, @character.position_vec.y, 5)
 
     randomize_target
