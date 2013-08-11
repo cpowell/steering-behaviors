@@ -90,9 +90,23 @@ class SteeringBehaviors::Vector
     self
   end
 
+  # A pure and correct dot product routine.
   # A · B = A.x * B.x + A.y * B.y
   def dot(b)
     val = @x*b.x + @y*b.y
+  end
+
+  # Unlike the 'pure' dot product above, this one ensures a -1.0..1.0 return value.
+  # If you're doing dot products of normalized vectors and expecting a pure -1.0..1.0
+  # return value for Math.acos() purposes, use this routine to avoid "Numerical argument
+  # is out of domain" errors that creep in due to rounding errors.
+  def clamped_dot(b)
+    val = self.dot(b)
+
+    val = 1.0 if val > 1.0
+    val = -1.0 if val < -1.0
+
+    val
   end
 
   def perpendicular
@@ -106,7 +120,7 @@ class SteeringBehaviors::Vector
       up = SteeringBehaviors::Vector.new(0, 1)
     end
 
-    theta = Math.acos(self.normalize.dot(up))
+    theta = Math.acos(self.normalize.clamped_dot(up))
 
     theta *= -1 if @x < 0
     degs = SteeringBehaviors::Vector.rad2deg(theta)

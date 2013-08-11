@@ -196,6 +196,14 @@ class VectorTest < MiniTest::Unit::TestCase
     @v2 = SteeringBehaviors::Vector.new(1.0, 0.5)
     assert_equal(1.0, @v1.dot(@v2))
 
+    @v1 = SteeringBehaviors::Vector.new(1.0, 1.0)
+    @v2 = SteeringBehaviors::Vector.new(1.0, 1.0)
+    assert_equal(2.0, @v1.dot(@v2))
+
+    @v1 = SteeringBehaviors::Vector.new(0.708, 0.707)
+    @v2 = SteeringBehaviors::Vector.new(0.707, 0.707)
+    assert_equal(1.000405, @v1.dot(@v2))
+
     @v1 = SteeringBehaviors::Vector.new(1.0, 0)
     @v2 = SteeringBehaviors::Vector.new(0, 1.0)
     assert_equal(0, @v1.dot(@v2))
@@ -233,6 +241,42 @@ class VectorTest < MiniTest::Unit::TestCase
     @v2 = SteeringBehaviors::Vector.new(2.2, 2.2)
     assert_equal(-2.2, @v1.dot(@v2))
   end
+
+  def test_clamped_dot_product
+    @v1 = SteeringBehaviors::Vector.new(0.5, 1)
+    @v2 = SteeringBehaviors::Vector.new(1.0, 0.5)
+    assert_equal(1.0, @v1.clamped_dot(@v2))
+
+    @v1 = SteeringBehaviors::Vector.new(0.708, 0.707)
+    @v2 = SteeringBehaviors::Vector.new(0.707, 0.707)
+    assert_equal(1.0, @v1.clamped_dot(@v2))
+
+    @v1 = SteeringBehaviors::Vector.new(0, 1.0)
+    @v2 = SteeringBehaviors::Vector.new(-1.0, 0)
+    assert_equal(0, @v1.clamped_dot(@v2))
+
+    @v1 = SteeringBehaviors::Vector.new(0, 1.0)
+    @v2 = SteeringBehaviors::Vector.new(0.707, 0.707)
+    @v2.normalize!
+    assert_equal(0.7071067811865476, @v1.clamped_dot(@v2))
+
+    @v1 = SteeringBehaviors::Vector.new(1.0, 0)
+    @v2 = SteeringBehaviors::Vector.new(-0.707, 0.707)
+    @v2.normalize!
+    assert_equal(-0.7071067811865476, @v1.clamped_dot(@v2))
+
+    @v1 = SteeringBehaviors::Vector.new(1.0, 0)
+    @v2 = SteeringBehaviors::Vector.new(-0.707, -0.707)
+    @v2.normalize!
+    assert_equal(-0.7071067811865476, @v1.clamped_dot(@v2))
+
+    @v1 = SteeringBehaviors::Vector.new(0.5, 0.866)
+    @v1.normalize!
+    @v2 = SteeringBehaviors::Vector.new(0.866, 0.5)
+    @v2.normalize!
+    assert_equal(0.86603810567665, @v1.clamped_dot(@v2))
+  end
+
 
   def test_perpendicular
     @v2 = @v.perpendicular
