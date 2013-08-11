@@ -35,6 +35,7 @@ class SteeringBehaviors::Pursue
     # printf "#{ipos.entity}'s target #{qpos.entity} is '#{gen}'. fness: %0.3f pness: %0.3f f: %0.3f p: %0.3f tf: %0.3f\n", forwardness, parallelness, f, p, tf
     predicted_pos_vec = other_kinematic.position_vec + (other_kinematic.velocity_vec * estimated_time_enroute)
 
+    # puts "#{compute_nearest_approach_distance(character_kinematic, other_kinematic)} in #{compute_nearest_approach_time(character_kinematic, other_kinematic)} sec"
     return [predicted_pos_vec, SteeringBehaviors::Seek.steer(character_kinematic, predicted_pos_vec)]
   end
 
