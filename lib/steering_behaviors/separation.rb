@@ -9,7 +9,7 @@
 class SteeringBehaviors::Separation
   extend SteeringBehaviors::Common
 
-  # Align with a moving target by observing its course.
+  # Steer to avoid another kinematic by a certain radius.
   #
   # * *Args*    :
   #   - +character_kinematic+ -> kinematic of "our" character that is moving and separating
@@ -19,10 +19,11 @@ class SteeringBehaviors::Separation
   #   - a steering force
   #
   def self.steer(character_kinematic, other_kinematic, danger_radius)
-    cpa_time, char_pos_vec, other_pos_vec = compute_nearest_approach_positions(character_kinematic, other_kinematic)
+    cpa_time, char_pos_at_cpa, other_pos_at_cpa = compute_nearest_approach(character_kinematic, other_kinematic)
 
+    # Do nothing if the CPA is in the past, or if we won't breach the danger radius
     return SteeringBehaviors::VEC_ZERO if cpa_time < 0
-    cpa_dist = (char_pos_vec - other_pos_vec).length
+    cpa_dist = (char_pos_at_cpa - other_pos_at_cpa).length
     return SteeringBehaviors::VEC_ZERO if cpa_dist > danger_radius
 
     parallelness = character_kinematic.heading_vec.dot(other_kinematic.heading_vec)
@@ -33,7 +34,7 @@ class SteeringBehaviors::Separation
     if parallelness < -0.707
       # anti-parallel, head-on paths
       # steer away from the threat's future posn
-      offset_vec = other_pos_vec - character_kinematic.position_vec
+      offset_vec = other_pos_at_cpa - character_kinematic.position_vec
       side_dot = offset_vec.dot(side_vec)
       val = (side_dot > 0 ? -1.0 : 1.0)
       # puts "Head-on, steering away from future pos"
