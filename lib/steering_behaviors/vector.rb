@@ -114,11 +114,7 @@ class SteeringBehaviors::Vector
   end
 
   def compass_bearing(y_down_more_positive=false)
-    if y_down_more_positive
-      up = SteeringBehaviors::Vector.new(0, -1)
-    else
-      up = SteeringBehaviors::Vector.new(0, 1)
-    end
+    up = ( y_down_more_positive ? SteeringBehaviors::VEC_UP_NEGY : SteeringBehaviors::VEC_UP_POSY)
 
     theta = Math.acos(self.normalize.clamped_dot(up))
 
@@ -207,5 +203,4 @@ class SteeringBehaviors::Vector
   def to_s
     format("Vector {[%.7f, %.7f] len %0.7f}", @x, @y, length)
   end
-
 end
