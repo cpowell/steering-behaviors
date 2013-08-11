@@ -8,6 +8,48 @@
 
 module SteeringBehaviors::Common
 
+  # Given two kinematics, determine how many seconds until their Closest Point of Approach (CPA)
+  #
+  # * *Args*    :
+  #   - +character_kinematic+ -> kinematic of "our" character that is moving
+  #   - +other_kinematic+ -> kinematic of the other mover
+  # * *Returns* :
+  #   - time in seconds until CPA; may be negative (for 'in the past')
+  #
+  def compute_nearest_approach_time(character_kinematic, other_kinematic)
+    relative_vel_vec = other_kinematic.velocity_vec - character_kinematic.velocity_vec
+    relative_speed = relative_vel_vec.length
+
+    return 0 if relative_speed==0
+
+    relative_tangent_vec = relative_vel_vec / relative_speed
+    relative_position_vec = character_kinematic.position_vec - other_kinematic.position_vec
+
+    projection = relative_tangent_vec.dot(relative_position_vec)
+    return projection / relative_speed
+  end
+
+  def compute_nearest_approach_positions(character_kinematic, other_kinematic)
+    # How long until it happens?
+    cpa_time = compute_nearest_approach_time(character_kinematic, other_kinematic)
+
+    # How far will the two kinematics go in that time?
+    char_travel_vec  = character_kinematic.velocity_vec * cpa_time
+    other_travel_vec = other_kinematic.velocity_vec * cpa_time
+
+    # Project forward from current positions...
+    char_pos_vec = char_travel_vec + character_kinematic.position_vec
+    other_pos_vec = other_travel_vec + other_kinematic.position_vec
+
+    return [char_pos_vec, other_pos_vec]
+  end
+
+  def compute_nearest_approach_distance(character_kinematic, other_kinematic)
+    char_pos_vec, other_pos_vec = compute_nearest_approach_positions(character_kinematic, other_kinematic)
+
+    dist = (char_pos_vec - other_pos_vec).length
+  end
+
   # A support routine used by Pursue and Evade. Observes how 'forward' the
   # target is, and how 'parallel' its course is to our own.
   #
