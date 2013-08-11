@@ -1,5 +1,8 @@
 # Changelog for steering-behaviors
 
+## 1.0.6, 11 August 2013
+* Refined 'separate' to employ forwardness as part of its calculation.
+
 ## 1.0.5, 11 August 2013
 * Added 'separate', a predictive collision-avoidance steering behavior
 
