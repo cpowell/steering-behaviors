@@ -29,7 +29,7 @@ class SteeringBehaviors::Steering
 
     # If this timeslice's proposed velocity-vector exceeds the turn rate,
     # come up with a revised velociy-vec that doesn't exceed the rate -- and use that.
-    angle             = Math.acos character_kinematic.heading_vec.dot(desired_velocity.normalize)
+    angle             = Math.acos character_kinematic.heading_vec.clamped_dot(desired_velocity.normalize)
     max_course_change = character_kinematic.max_turn * delta
 
     if angle.abs > max_course_change
