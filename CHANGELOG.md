@@ -1,5 +1,8 @@
 # Changelog for steering-behaviors
 
+## 1.0.5, 11 August 2013
+* Added 'separate', a predictive collision-avoidance steering behavior
+
 ## 1.0.4, 8 August 2013
 * Rewrote 'arrive' to the more canonical behavior described by Reynolds
 

@@ -12,7 +12,7 @@ The steering behaviors expect to operate on a 'kinematic' thing. That is, the st
 
 ## Supported stering behaviors
 
-The library supports these steering behaviors:
+The library supports a variety of steering behaviors. Some of these are the 'canonical' steering behaviors documented at Craig Reynold's website (see References, below). Others are behaviors documented in game programming books or behaviors that I have found useful for my own game programming needs:
 
 * Seek: aim for and reach the specified point at top speed
 * Flee: head away from the specified point at top speed (the opposite of Seek)
@@ -20,11 +20,7 @@ The library supports these steering behaviors:
 * Pursue: given a moving target, anticipate its future position and intercept the target intelligently
 * Evade: given a moving target, anticipate its future position and avoid the target intelligently (the opposite of Pursue)
 * Wander: move about the plain in a 'random walk' way
-
-These are all standard steering behaviors documented at Craig Reynold's website (see References, below).
-
-Additionally, this library supports some other useful behaviors:
-
+* Separate: predictively steer to avoid collision with another agent, based on the closest point of approach
 * Align: align my course with the target's course, without altering my speed
 * Match: match my course and speed to those of the target
 * Broadside: expose my side to the target in the manner of a ship's broadside; useful for orbiting or exposing weapons, say
