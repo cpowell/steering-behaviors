@@ -224,6 +224,14 @@ class VectorTest < MiniTest::Unit::TestCase
     @v2 = SteeringBehaviors::Vector.new(0.866, 0.5)
     @v2.normalize!
     assert_equal(0.86603810567665, @v1.dot(@v2))
+
+    @v1 = SteeringBehaviors::Vector.new(500, 500)
+    @v2 = SteeringBehaviors::Vector.new(-14, 75)
+    assert_equal(30500, @v1.dot(@v2))
+
+    @v1 = SteeringBehaviors::Vector.new(-0.5, -0.5)
+    @v2 = SteeringBehaviors::Vector.new(2.2, 2.2)
+    assert_equal(-2.2, @v1.dot(@v2))
   end
 
   def test_perpendicular

@@ -93,10 +93,6 @@ class SteeringBehaviors::Vector
   # A · B = A.x * B.x + A.y * B.y
   def dot(b)
     val = @x*b.x + @y*b.y
-    val = 1.0 if val > 1.0
-    val = -1.0 if val < -1.0
-
-    val
   end
 
   def perpendicular
