@@ -277,6 +277,56 @@ class VectorTest < MiniTest::Unit::TestCase
     assert_equal(0.86603810567665, @v1.clamped_dot(@v2))
   end
 
+  def test_dot_product_commutability
+    @v1 = SteeringBehaviors::Vector.new(0.5, 1)
+    @v2 = SteeringBehaviors::Vector.new(1.0, 0.5)
+    assert_equal(@v2.dot(@v1), @v1.dot(@v2))
+
+    @v1 = SteeringBehaviors::Vector.new(1.0, 1.0)
+    @v2 = SteeringBehaviors::Vector.new(1.0, 1.0)
+    assert_equal(@v2.dot(@v1), @v1.dot(@v2))
+
+    @v1 = SteeringBehaviors::Vector.new(0.708, 0.707)
+    @v2 = SteeringBehaviors::Vector.new(0.707, 0.707)
+    assert_equal(@v2.dot(@v1), @v1.dot(@v2))
+
+    @v1 = SteeringBehaviors::Vector.new(1.0, 0)
+    @v2 = SteeringBehaviors::Vector.new(0, 1.0)
+    assert_equal(@v2.dot(@v1), @v1.dot(@v2))
+
+    @v1 = SteeringBehaviors::Vector.new(0, 1.0)
+    @v2 = SteeringBehaviors::Vector.new(-1.0, 0)
+    assert_equal(@v2.dot(@v1), @v1.dot(@v2))
+
+    @v1 = SteeringBehaviors::Vector.new(0, 1.0)
+    @v2 = SteeringBehaviors::Vector.new(0.707, 0.707)
+    @v2.normalize!
+    assert_equal(@v2.dot(@v1), @v1.dot(@v2))
+
+    @v1 = SteeringBehaviors::Vector.new(1.0, 0)
+    @v2 = SteeringBehaviors::Vector.new(-0.707, 0.707)
+    @v2.normalize!
+    assert_equal(@v2.dot(@v1), @v1.dot(@v2))
+
+    @v1 = SteeringBehaviors::Vector.new(1.0, 0)
+    @v2 = SteeringBehaviors::Vector.new(-0.707, -0.707)
+    @v2.normalize!
+    assert_equal(@v2.dot(@v1), @v1.dot(@v2))
+
+    @v1 = SteeringBehaviors::Vector.new(0.5, 0.866)
+    @v1.normalize!
+    @v2 = SteeringBehaviors::Vector.new(0.866, 0.5)
+    @v2.normalize!
+    assert_equal(@v2.dot(@v1), @v1.dot(@v2))
+
+    @v1 = SteeringBehaviors::Vector.new(500, 500)
+    @v2 = SteeringBehaviors::Vector.new(-14, 75)
+    assert_equal(@v2.dot(@v1), @v1.dot(@v2))
+
+    @v1 = SteeringBehaviors::Vector.new(-0.5, -0.5)
+    @v2 = SteeringBehaviors::Vector.new(2.2, 2.2)
+    assert_equal(@v2.dot(@v1), @v1.dot(@v2))
+  end
 
   def test_perpendicular
     @v2 = @v.perpendicular
