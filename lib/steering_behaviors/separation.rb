@@ -35,21 +35,21 @@ class SteeringBehaviors::Separation
 
     if parallelness < -0.707
       # anti-parallel, head-on paths; steer away from the threat's future pos
-      puts "Head-on, steering away from future pos"
+      # puts "Head-on, steering away from future pos"
       offset_vec = other_pos_at_cpa - character_kinematic.position_vec
       side_dot = offset_vec.dot(side_vec)
     elsif parallelness > 0.707
       # parallel paths; steer away from threat
-      puts "Parallel, steering away from other guy"
+      # puts "Parallel, steering away from other guy"
       side_dot = offset_vec.dot(side_vec)
     else
       # perpendicular paths; steer behind threat
       side_dot = other_kinematic.velocity_vec.dot(side_vec)
       if forwardness < 0.707
-        puts "Perpendicular, steering ahead of other guy"
+        # puts "Perpendicular, steering ahead of other guy"
         side_dot *= -1
       else
-        puts "Perpendicular, steering behind other guy"
+        # puts "Perpendicular, steering behind other guy"
       end
     end
 

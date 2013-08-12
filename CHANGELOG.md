@@ -1,5 +1,8 @@
 # Changelog for steering-behaviors
 
+## 1.0.7, 12 August 2013
+* Fix embarrassing bug (left 'puts' statements uncommented in prior release)
+
 ## 1.0.6, 11 August 2013
 * Refined 'separate' to employ forwardness as part of its calculation.
 
