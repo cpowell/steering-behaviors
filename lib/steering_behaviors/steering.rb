@@ -16,9 +16,10 @@ class SteeringBehaviors::Steering
   #   - +character_kinematic+ -> "our" character that is moving
   #   - +steering_force+ -> force vector supplied by a steering behavior
   #   - +delta+ -> time delta (in seconds) used for scaling the result
+  #   - +accelerative+ -> whether the steering force should be permitted to accelerate our agent
   #
   def self.feel_the_force(character_kinematic, steering_force, delta, accelerative=true)
-    return if steering_force.nil?
+    return if steering_force.nil? || steering_force == SteeringBehaviors::VEC_ZERO
 
     acceleration = steering_force / character_kinematic.mass
 
