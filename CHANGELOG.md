@@ -1,5 +1,14 @@
 # Changelog for steering-behaviors
 
+## 1.1.0, 13 August 2013
+* Predictive interception lookahead tweaked slightly
+* Bugfix: angle-limited steering could never be accelerative
+* Evasion & pursuit demos are slower and more illustrative
+* Separation demo includes danger-radius circle, smaller time lookahead
+* Separation steering force scaled by speed for proper strength
+* feel_the_force() returns immediately for zero-vector steering
+* Bumping minor number; honestly, should have done this on 11 Aug
+
 ## 1.0.7, 12 August 2013
 * Fix embarrassing bug (left 'puts' statements uncommented in prior release)
 
