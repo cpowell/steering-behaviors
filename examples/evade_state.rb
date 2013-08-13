@@ -31,10 +31,10 @@ class EvadeState < BasicGameState
   def init(container, game)
     @container = container
 
-    @hunter = Bug.new(MAX_X/8, MAX_Y/8, 135, 100, 0.1, 1.7854, 50, 150)
+    randomize_things
+
     @hunter_img = Circle.new(@hunter.position_vec.x, @hunter.position_vec.y, 5)
 
-    randomize_target
     @tgt_img = Circle.new(@quarry.position_vec.x, @quarry.position_vec.y, 5)
 
     # Visual artifacts to illustrate what's going on...
@@ -65,9 +65,7 @@ class EvadeState < BasicGameState
     # Wrap at edges
     if @hunter.position_vec.x > MAX_X || @hunter.position_vec.y > MAX_Y ||
       @hunter.position_vec.x < 0 || @hunter.position_vec.y < 0
-      randomize_target
-      @hunter.position_vec.x = rand(MAX_X)
-      @hunter.position_vec.y = rand(MAX_Y)
+      randomize_things
     end
 
     @quarry.position_vec.x = 0 if @quarry.position_vec.x > MAX_X
@@ -92,7 +90,7 @@ class EvadeState < BasicGameState
       (steering_force.y + @hunter.position_vec.y)
 
     if (@quarry.position_vec.x - @hunter.position_vec.x).abs < 10 && (@quarry.position_vec.y - @hunter.position_vec.y).abs < 10
-      randomize_target
+      randomize_things
     end
   end
 
@@ -144,7 +142,8 @@ class EvadeState < BasicGameState
   end
 
   # Place the quarry somewhere random...
-  def randomize_target
+  def randomize_things
+    @hunter = Bug.new(MAX_X/2, MAX_Y/2, 135, 50, 1.1, 1.7854, 50, 150)
     @quarry = Bug.new(rand(MAX_X/2..MAX_X), rand(MAX_Y/2..MAX_Y), rand(360), rand(50..120), 0, 0, 0,0)
   end
 end
