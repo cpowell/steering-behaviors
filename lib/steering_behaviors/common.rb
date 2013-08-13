@@ -93,7 +93,7 @@ module SteeringBehaviors::Common
         tf = 1.8
       when 0
         gen="ahead, perpendicular"
-        tf = 1.35
+        tf = 1.45
       when -1
         gen="ahead, anti-parallel"
         tf = 1.10
