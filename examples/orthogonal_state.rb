@@ -32,7 +32,7 @@ class OrthogonalState < BasicGameState
     @game      = game
     @container = container
 
-    @hunter = Bug.new(MAX_X/2, MAX_Y/2, 135, 20, 0.1, 1.7854, 50, 150)
+    @hunter = Bug.new(MAX_X/2, MAX_Y/2, 135, 30, 1.1, 1.7854, 15, 150)
     @hunter_img = Circle.new(@hunter.position_vec.x, @hunter.position_vec.y, 5)
 
     randomize_target
@@ -59,7 +59,7 @@ class OrthogonalState < BasicGameState
     delta_s = delta / 1000.0
 
     steering_force = SteeringBehaviors::Orthogonal.steer(@hunter, @quarry)
-    SteeringBehaviors::Steering.feel_the_force(@hunter, steering_force, delta_s)
+    SteeringBehaviors::Steering.feel_the_force(@hunter, steering_force, delta_s, {:minimum_speed=>30})
     @hunter.move(delta_s)
     @quarry.move(delta_s)
 
@@ -143,6 +143,6 @@ class OrthogonalState < BasicGameState
 
   # Place the quarry somewhere random...
   def randomize_target
-    @quarry = Bug.new(rand(0..MAX_X), rand(0..MAX_Y), rand(360), 25, 0, 0, 0,0)
+    @quarry = Bug.new(rand(0..MAX_X), rand(0..MAX_Y), rand(360), 25, 0, 0, 0, 0)
   end
 end
