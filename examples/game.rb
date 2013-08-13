@@ -4,7 +4,7 @@
 # This file is part of The Ruby Steering Behaviors Library.
 # http://github.com/cpowell/steering-behaviors
 # You can redistribute and/or modify this software only in accordance with
-# the terms found in the "LICENSE" file included with the framework.
+# the terms found in the "LICENSE" file included with the library.
 
 require 'startup_state'
 
