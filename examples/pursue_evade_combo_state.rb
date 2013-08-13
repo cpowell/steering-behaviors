@@ -59,11 +59,11 @@ class PursueEvadeComboState < BasicGameState
   def update(container, game, delta)
     delta_s = delta / 1000.0
 
-    predicted_char_position, steering_force = SteeringBehaviors::Pursue.steer(@enemy, @character)
-    SteeringBehaviors::Steering.feel_the_force(@enemy, steering_force, delta_s)
+    predicted_char_position, enemy_steering_force = SteeringBehaviors::Pursue.steer(@enemy, @character)
+    SteeringBehaviors::Steering.feel_the_force(@enemy, enemy_steering_force, delta_s)
 
-    predicted_enemy_position, steering_force = SteeringBehaviors::Evade.steer(@character, @enemy)
-    SteeringBehaviors::Steering.feel_the_force(@character, steering_force, delta_s)
+    predicted_enemy_position, char_steering_force = SteeringBehaviors::Evade.steer(@character, @enemy)
+    SteeringBehaviors::Steering.feel_the_force(@character, char_steering_force, delta_s)
 
     @character.move(delta_s)
     @enemy.move(delta_s)
@@ -94,8 +94,8 @@ class PursueEvadeComboState < BasicGameState
     @heading_line.set @character.position_vec.x, @character.position_vec.y, (@character.position_vec.x + @character.heading_vec.x * VISUAL_SCALE), (@character.position_vec.y + @character.heading_vec.y * VISUAL_SCALE)
 
     @steering_force_line.set @character.position_vec.x, @character.position_vec.y,
-      (steering_force.x + @character.position_vec.x),
-      (steering_force.y + @character.position_vec.y)
+      (char_steering_force.x + @character.position_vec.x),
+      (char_steering_force.y + @character.position_vec.y)
 
     # If the enemy catches the char, start over
     if (@enemy.position_vec.x - @character.position_vec.x).abs < 10 && (@enemy.position_vec.y - @character.position_vec.y).abs < 10
@@ -160,6 +160,6 @@ class PursueEvadeComboState < BasicGameState
   # Place the quarry somewhere random...
   def randomize_things
     @character = Bug.new(MAX_X/2, MAX_Y/2, rand(360), rand(5..50), rand(0.2..1.3), Math::PI/2, 5, rand(30..60))
-    @enemy = Bug.new(rand(MAX_X/2..MAX_X), rand(MAX_Y/2..MAX_Y), rand(360), rand(5..75), rand(0.2..1.3), 2*Math::PI, 5, rand(40..90))
+    @enemy = Bug.new(rand(MAX_X/2..MAX_X), rand(MAX_Y/2..MAX_Y), rand(360), rand(5..75), rand(0.2..1.3), Math::PI/4, 5, rand(40..150))
   end
 end
