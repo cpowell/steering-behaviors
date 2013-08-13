@@ -50,20 +50,22 @@ class StartupState < BasicGameState
     graphics.draw_string("http://github.com/cpowell/steering-behaviors", 8, 70)
 
     graphics.setColor(Color.cyan)
-    graphics.draw_string("(Type 'a' to arrive)",     8, 100)
-    graphics.draw_string("(Type 'w' to wander)",     8, 120)
+    v = 100
+    graphics.draw_string("(Type 'a' to arrive)",     8, v)
+    graphics.draw_string("(Type 'w' to wander)",     8, v+=20)
 
-    graphics.draw_string("(Type 'e' to evade)",      8, 150)
-    graphics.draw_string("(Type 'p' to pursue)",     8, 170)
+    graphics.draw_string("(Type 'e' to evade)",      8, v+=50)
+    graphics.draw_string("(Type 'p' to pursue)",     8, v+=20)
+    graphics.draw_string("(Type 'c' to pursue / evade combo)", 8, v+=20)
 
-    graphics.draw_string("(Type 's' to seek)",       8, 200)
-    graphics.draw_string("(Type 'f' to flee)",       8, 220)
+    graphics.draw_string("(Type 's' to seek)",       8, v+=50)
+    graphics.draw_string("(Type 'f' to flee)",       8, v+=20)
 
-    graphics.draw_string("(Type 'g' to align)",      8, 250)
-    graphics.draw_string("(Type 'm' to match)",      8, 270)
-    graphics.draw_string("(Type 'o' to orthogonal)", 8, 290)
-    graphics.draw_string("(Type 'b' to broadside)",  8, 310)
-    graphics.draw_string("(Type 'r' to separate)",   8, 330)
+    graphics.draw_string("(Type 'g' to align)",      8, v+=50)
+    graphics.draw_string("(Type 'm' to match)",      8, v+=20)
+    graphics.draw_string("(Type 'o' to orthogonal)", 8, v+=20)
+    graphics.draw_string("(Type 'b' to broadside)",  8, v+=20)
+    graphics.draw_string("(Type 'r' to separate)",   8, v+=20)
 
   end
 
@@ -96,6 +98,8 @@ class StartupState < BasicGameState
       @game.enterState(OrthogonalState::ID, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
     elsif key==Input::KEY_R
       @game.enterState(SeparationState::ID, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
+    elsif key==Input::KEY_C
+      @game.enterState(PursueEvadeComboState::ID, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
     elsif key==Input::KEY_ESCAPE
       @container.exit
     end

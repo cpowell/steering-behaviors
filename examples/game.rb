@@ -16,6 +16,7 @@ require 'flee_state'
 require 'match_state'
 require 'orthogonal_state'
 require 'pursue_state'
+require 'pursue_evade_combo_state'
 require 'seek_state'
 require 'separation_state'
 require 'wander_state'
@@ -59,6 +60,7 @@ class Game < StateBasedGame
     addState MatchState.new
     addState OrthogonalState.new
     addState PursueState.new
+    addState PursueEvadeComboState.new
     addState SeekState.new
     addState SeparationState.new
     addState WanderState.new
