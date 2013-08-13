@@ -9,13 +9,13 @@
 class SteeringBehaviors::Evade
   extend SteeringBehaviors::Common
 
-  # Evade a moving target by anticipating its future position. Calculates where it thinks
-  # the target will be, and leverages 'flee' to calculate how to best escape.
+  # Evade a moving target by anticipating its future position. Our character calculates
+  # where it thinks the enemy will be, and leverages 'flee' to calculate how to best escape.
   # See http://www.red3d.com/cwr/steer/
   #
   # * *Args*    :
   #   - +character_kinematic+ -> kinematic of "our" character that is moving and evading
-  #   - +other_kinematic+ -> kinematic of the thing to evade
+  #   - +enemy_kinematic+ -> kinematic of the thing to evade
   # * *Returns* :
   #   - a steering force
   #
