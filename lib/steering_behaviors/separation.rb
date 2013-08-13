@@ -31,7 +31,7 @@ class SteeringBehaviors::Separation
     forwardness = unit_offset.dot(character_kinematic.heading_vec)
     parallelness = character_kinematic.heading_vec.dot(other_kinematic.heading_vec)
 
-    side_vec = character_kinematic.heading_vec.perpendicular
+    side_vec = character_kinematic.heading_vec.perpendicular * character_kinematic.speed
 
     if parallelness < -0.707
       # anti-parallel, head-on paths; steer away from the threat's future pos
