@@ -45,8 +45,8 @@ class SteeringBehaviors::Steering
       #   limited_crse
 
       character_kinematic.velocity_vec = SteeringBehaviors::Vector.new(
-        Math.sin(limited_crse) * character_kinematic.speed,
-        Math.cos(limited_crse) * character_kinematic.speed
+        Math.sin(limited_crse) * desired_velocity.length,
+        Math.cos(limited_crse) * desired_velocity.length
       )
     else
       character_kinematic.velocity_vec = desired_velocity
