@@ -16,7 +16,7 @@ class SeparationState < BasicGameState
   MAX_X = 800
   MAX_Y = 800
   MAX_TGT_VEL = 100
-  DANGER_RADIUS = 150
+  DANGER_RADIUS = 50
 
   # Required by StateBasedGame
   def getID
@@ -35,6 +35,8 @@ class SeparationState < BasicGameState
 
     @character = Bug.new(MAX_X/2, MAX_Y/2, 135, 50, 1.1, 1.7854, 25, 250)
     @character_img = Circle.new(@character.position_vec.x, @character.position_vec.y, 5)
+
+    @danger = Circle.new(0, 0, DANGER_RADIUS)
 
     randomize_targets
 
@@ -75,12 +77,13 @@ class SeparationState < BasicGameState
     @min_time = 10 # seconds of look-ahead
     @worst_threat = nil
 
-    # As we're updating all the movers, choose the 'worst threat'. This is
+    # As we're updating all the movers, choose the 'worst threat', defined as
     # the threat with the lowest time-to-closest-approach. Once identified,
-    # that threat will be separated-from if it will penetrate DANGER_RADIUS.
-    # This minimum-CPA method is naive and doesn't always truly identify
-    # the most pressing threat, as you'll see in the example, but works well
-    # enough for a demo.
+    # we steer to separate from that threat.
+    #
+    # NOTE: this minimum-CPA method is really quite naive and fails to consistently
+    # identify the most pressing threat, as you'll see running the example.
+    # It works well enough for the demo but do something better in your own game.
 
     @bad_guys.each_with_index do |bg, i|
       bg.move(delta_s)
@@ -103,6 +106,8 @@ class SeparationState < BasicGameState
     if @worst_threat
       steering_force = SteeringBehaviors::Separation.steer(@character, @bad_guys[@worst_threat], DANGER_RADIUS)
       SteeringBehaviors::Steering.feel_the_force(@character, steering_force, delta_s, false)
+      @danger.setCenterX @bad_guys[@worst_threat].position_vec.x
+      @danger.setCenterY @bad_guys[@worst_threat].position_vec.y
     else
       steering_force = SteeringBehaviors::VEC_ZERO
     end
@@ -155,16 +160,15 @@ class SeparationState < BasicGameState
        g.draw_string(sprintf("%.1f", @bad_cpa_times[i]), img.x+10, img.y+10) unless @bad_cpa_times[i].nil?
     end
 
-
-    g.setColor(Color.red)
-    g.draw(@tgt_imgs[@worst_threat]) if @worst_threat
-
     g.setColor(Color.white)
     g.draw @intercept_img
 
     if @worst_threat
+      g.setColor(Color.red)
+      g.draw(@tgt_imgs[@worst_threat]) if @worst_threat
       notice = sprintf("Worst threat is %s, CPA in %.1f secs", @worst_threat, @min_time)
       g.draw_string(notice, 8, container.height/2)
+      g.draw @danger
     end
   end
 
