@@ -60,7 +60,7 @@ class SteeringBehaviors::Steering
       desired_velocity.truncate!(character_kinematic.speed)
     end
 
-    if opts[:minimum_speed]
+    if opts[:minimum_speed] && desired_velocity.length < opts[:minimum_speed]
       desired_velocity = desired_velocity.normalize! * opts[:minimum_speed]
     end
 
