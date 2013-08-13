@@ -74,7 +74,7 @@ class SeparationState < BasicGameState
   def update(container, game, delta)
     delta_s = delta / 1000.0
 
-    @min_time = 10 # seconds of look-ahead
+    @min_time = 5 # seconds of look-ahead
     @worst_threat = nil
 
     # As we're updating all the movers, choose the 'worst threat', defined as
