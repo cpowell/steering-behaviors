@@ -31,6 +31,7 @@ class SeparationState < BasicGameState
   #   - +game+ -> the game itself
   #
   def init(container, game)
+    @game = game
     @container = container
 
     @character = Bug.new(MAX_X/2, MAX_Y/2, 135, 50, 1.1, 1.7854, 25, 250)
@@ -105,7 +106,7 @@ class SeparationState < BasicGameState
 
     if @worst_threat
       steering_force = SteeringBehaviors::Separation.steer(@character, @bad_guys[@worst_threat], DANGER_RADIUS)
-      SteeringBehaviors::Steering.feel_the_force(@character, steering_force, delta_s, false)
+      SteeringBehaviors::Steering.feel_the_force(@character, steering_force, delta_s)
       @danger.setCenterX @bad_guys[@worst_threat].position_vec.x
       @danger.setCenterY @bad_guys[@worst_threat].position_vec.y
     else
@@ -180,7 +181,7 @@ class SeparationState < BasicGameState
   #
   def keyReleased(key, char)
     if key==Input::KEY_ESCAPE
-      @container.exit
+      @game.enterState(1, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
     elsif key==Input::KEY_R
       randomize_targets
     elsif key==Input::KEY_P

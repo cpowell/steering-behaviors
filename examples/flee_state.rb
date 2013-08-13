@@ -27,6 +27,7 @@ class FleeState < BasicGameState
   #   - +container+ -> game container that handles the game loop, fps recording and managing the input system
   #
   def init(container, game)
+    @game = game
     @container = container
 
     @bug = Bug.new(MAX_X/8, MAX_Y/8, 135, 100, 1.0, 1.7854, 15, 150)
@@ -54,7 +55,7 @@ class FleeState < BasicGameState
     delta_s = delta / 1000.0
 
     steering_force = SteeringBehaviors::Flee.steer(@bug, @target_pos)
-    SteeringBehaviors::Steering.feel_the_force(@bug, steering_force, delta_s, true)
+    SteeringBehaviors::Steering.feel_the_force(@bug, steering_force, delta_s)
     @bug.move(delta_s)
 
     # Wrap at edges
@@ -125,7 +126,7 @@ class FleeState < BasicGameState
   #
   def keyReleased(key, char)
     if key==Input::KEY_ESCAPE
-      @container.exit
+      @game.enterState(1, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
     elsif key==Input::KEY_P
       if @container.isPaused
         @container.resume

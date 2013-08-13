@@ -29,6 +29,7 @@ class AlignState < BasicGameState
   #   - +game+ -> the game itself
   #
   def init(container, game)
+    @game = game
     @container = container
 
     @hunter = Bug.new(MAX_X/8, MAX_Y/8, 135, 65, 0.1, 0.698, 50, 150)
@@ -128,7 +129,7 @@ class AlignState < BasicGameState
   #
   def keyReleased(key, char)
     if key==Input::KEY_ESCAPE
-      @container.exit
+      @game.enterState(1, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
     elsif key==Input::KEY_R
       randomize_target
     elsif key==Input::KEY_P

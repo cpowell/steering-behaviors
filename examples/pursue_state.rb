@@ -29,6 +29,7 @@ class PursueState < BasicGameState
   #   - +game+ -> the game itself
   #
   def init(container, game)
+    @game = game
     @container = container
 
     randomize_things
@@ -131,7 +132,7 @@ class PursueState < BasicGameState
   #
   def keyReleased(key, char)
     if key==Input::KEY_ESCAPE
-      @container.exit
+      @game.enterState(1, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
     elsif key==Input::KEY_P
       if @container.isPaused
         @container.resume
