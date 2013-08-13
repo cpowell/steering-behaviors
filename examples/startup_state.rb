@@ -46,19 +46,25 @@ class StartupState < BasicGameState
   #
   def render(container, game, graphics)
     graphics.setColor(Color.white)
-    graphics.draw_string("Steering behaviors demo (ESC to exit)", 8, container.height - 30)
-    graphics.setColor(Color.red)
-    graphics.draw_string("(Type 'w' to wander)", 8, container.height - 200)
-    graphics.draw_string("(Type 's' to seek)", 8, container.height - 220)
-    graphics.draw_string("(Type 'f' to flee)", 8, container.height - 240)
-    graphics.draw_string("(Type 'p' to pursue)", 8, container.height - 260)
-    graphics.draw_string("(Type 'a' to arrive)", 8, container.height - 280)
-    graphics.draw_string("(Type 'e' to evade)", 8, container.height - 300)
-    graphics.draw_string("(Type 'g' to align)", 8, container.height - 320)
-    graphics.draw_string("(Type 'm' to match)", 8, container.height - 340)
-    graphics.draw_string("(Type 'b' to broadside)", 8, container.height - 360)
-    graphics.draw_string("(Type 'o' to orthogonal)", 8, container.height - 380)
-    graphics.draw_string("(Type 'r' to separate)", 8, container.height - 400)
+    graphics.draw_string("Steering behaviors demo (ESC to exit)", 8, 50)
+    graphics.draw_string("http://github.com/cpowell/steering-behaviors", 8, 70)
+
+    graphics.setColor(Color.cyan)
+    graphics.draw_string("(Type 'a' to arrive)",     8, 100)
+    graphics.draw_string("(Type 'w' to wander)",     8, 120)
+
+    graphics.draw_string("(Type 'e' to evade)",      8, 150)
+    graphics.draw_string("(Type 'p' to pursue)",     8, 170)
+
+    graphics.draw_string("(Type 's' to seek)",       8, 200)
+    graphics.draw_string("(Type 'f' to flee)",       8, 220)
+
+    graphics.draw_string("(Type 'g' to align)",      8, 250)
+    graphics.draw_string("(Type 'm' to match)",      8, 270)
+    graphics.draw_string("(Type 'o' to orthogonal)", 8, 290)
+    graphics.draw_string("(Type 'b' to broadside)",  8, 310)
+    graphics.draw_string("(Type 'r' to separate)",   8, 330)
+
   end
 
   # Notification that a key was released
