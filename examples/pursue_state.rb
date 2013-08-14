@@ -144,7 +144,7 @@ class PursueState < BasicGameState
 
   # Place the quarry somewhere random...
   def randomize_things
-    @hunter = Bug.new(MAX_X/8, MAX_Y/8, 135, 25, 0.7, 1.7854, 50, 150)
+    @hunter = Bug.new(MAX_X/8, MAX_Y/8, 135, 25, 0.7, Math::PI, 50, 150)
     @quarry = Bug.new(rand(MAX_X/2..MAX_X), rand(MAX_Y/2..MAX_Y), rand(360), rand(50..120), 0, 0, 0,0)
   end
 end

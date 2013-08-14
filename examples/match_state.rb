@@ -32,7 +32,7 @@ class MatchState < BasicGameState
     @game = game
     @container = container
 
-    @hunter = Bug.new(MAX_X/8, MAX_Y/8, 135, 100, 0.1, 1.7854, 50, 150)
+    @hunter = Bug.new(MAX_X/8, MAX_Y/8, 135, 100, 1.1, 1.7854, 50, 150)
     @hunter_img = Circle.new(@hunter.position_vec.x, @hunter.position_vec.y, 5)
 
     randomize_target
