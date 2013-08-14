@@ -4,7 +4,7 @@
 # This file is part of The Ruby Steering Behaviors Library.
 # http://github.com/cpowell/steering-behaviors
 # You can redistribute and/or modify this software only in accordance with
-# the terms found in the "LICENSE" file included with the framework.
+# the terms found in the "LICENSE" file included with the library.
 
 require 'startup_state'
 
@@ -16,6 +16,7 @@ require 'flee_state'
 require 'match_state'
 require 'orthogonal_state'
 require 'pursue_state'
+require 'pursue_evade_combo_state'
 require 'seek_state'
 require 'separation_state'
 require 'wander_state'
@@ -59,6 +60,7 @@ class Game < StateBasedGame
     addState MatchState.new
     addState OrthogonalState.new
     addState PursueState.new
+    addState PursueEvadeComboState.new
     addState SeekState.new
     addState SeparationState.new
     addState WanderState.new

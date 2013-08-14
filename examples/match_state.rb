@@ -4,7 +4,7 @@
 # This file is part of The Ruby Steering Behaviors Library.
 # http://github.com/cpowell/steering-behaviors
 # You can redistribute and/or modify this software only in accordance with
-# the terms found in the "LICENSE" file included with the framework.
+# the terms found in the "LICENSE" file included with the library.
 
 require 'bug'
 
@@ -29,9 +29,10 @@ class MatchState < BasicGameState
   #   - +game+ -> the game itself
   #
   def init(container, game)
+    @game = game
     @container = container
 
-    @hunter = Bug.new(MAX_X/8, MAX_Y/8, 135, 100, 0.1, 1.7854, 50, 150)
+    @hunter = Bug.new(MAX_X/8, MAX_Y/8, 135, 100, 1.1, 1.7854, 50, 150)
     @hunter_img = Circle.new(@hunter.position_vec.x, @hunter.position_vec.y, 5)
 
     randomize_target
@@ -128,7 +129,7 @@ class MatchState < BasicGameState
   #
   def keyReleased(key, char)
     if key==Input::KEY_ESCAPE
-      @container.exit
+      @game.enterState(1, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
     elsif key==Input::KEY_R
       randomize_target
     elsif key==Input::KEY_P

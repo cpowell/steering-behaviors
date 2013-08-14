@@ -4,7 +4,7 @@
 # This file is part of The Ruby Steering Behaviors Library.
 # http://github.com/cpowell/steering-behaviors
 # You can redistribute and/or modify this software only in accordance with
-# the terms found in the "LICENSE" file included with the framework.
+# the terms found in the "LICENSE" file included with the library.
 
 require 'bug'
 
@@ -27,6 +27,7 @@ class SeekState < BasicGameState
   #   - +container+ -> game container that handles the game loop, fps recording and managing the input system
   #
   def init(container, game)
+    @game = game
     @container = container
 
     @bug = Bug.new(MAX_X/8, MAX_Y/8, 135, 100, 0.1, 1.7854, 50, 150)
@@ -125,7 +126,7 @@ class SeekState < BasicGameState
   #
   def keyReleased(key, char)
     if key==Input::KEY_ESCAPE
-      @container.exit
+      @game.enterState(1, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
     elsif key==Input::KEY_R
       randomize_target
     elsif key==Input::KEY_P

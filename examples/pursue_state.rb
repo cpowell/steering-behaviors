@@ -4,7 +4,7 @@
 # This file is part of The Ruby Steering Behaviors Library.
 # http://github.com/cpowell/steering-behaviors
 # You can redistribute and/or modify this software only in accordance with
-# the terms found in the "LICENSE" file included with the framework.
+# the terms found in the "LICENSE" file included with the library.
 
 require 'bug'
 
@@ -29,6 +29,7 @@ class PursueState < BasicGameState
   #   - +game+ -> the game itself
   #
   def init(container, game)
+    @game = game
     @container = container
 
     randomize_things
@@ -131,7 +132,7 @@ class PursueState < BasicGameState
   #
   def keyReleased(key, char)
     if key==Input::KEY_ESCAPE
-      @container.exit
+      @game.enterState(1, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
     elsif key==Input::KEY_P
       if @container.isPaused
         @container.resume
@@ -143,7 +144,7 @@ class PursueState < BasicGameState
 
   # Place the quarry somewhere random...
   def randomize_things
-    @hunter = Bug.new(MAX_X/8, MAX_Y/8, 135, 25, 0.7, 1.7854, 50, 150)
+    @hunter = Bug.new(MAX_X/8, MAX_Y/8, 135, 25, 0.7, Math::PI, 50, 150)
     @quarry = Bug.new(rand(MAX_X/2..MAX_X), rand(MAX_Y/2..MAX_Y), rand(360), rand(50..120), 0, 0, 0,0)
   end
 end
