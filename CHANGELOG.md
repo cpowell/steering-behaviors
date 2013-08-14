@@ -1,13 +1,15 @@
 # Changelog for steering-behaviors
 
-## 1.1.0, 13 August 2013
+## 2.0.0, 13 August 2013
+* Alteration to feel_the_force() to accept hashed options to alter behavior (API change)
+* A new combo pursuit/evasion demo showing both behaviors simultaneously
+* Big cosmetic changes to example front-end
 * Predictive interception lookahead tweaked slightly
 * Bugfix: angle-limited steering could never be accelerative
-* Evasion & pursuit demos are slower and more illustrative
+* Demo characters move more slowly, helping make the examples more illustrative
 * Separation demo includes danger-radius circle, smaller time lookahead
 * Separation steering force scaled by speed for proper strength
 * feel_the_force() returns immediately for zero-vector steering
-* Bumping minor number; honestly, should have done this on 11 Aug
 
 ## 1.0.7, 12 August 2013
 * Fix embarrassing bug (left 'puts' statements uncommented in prior release)
