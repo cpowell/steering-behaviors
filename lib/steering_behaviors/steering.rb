@@ -12,11 +12,12 @@ class SteeringBehaviors::Steering
   # Takes turn rate limitations, mass, and other limits into account, and
   # directly alters the provided Mobile component.
   #
-  # The routine understands these settings of the options hash param:
+  # The options hash lets you alter the behaviors a bit from the 'canonical'
+  # behaviors. The routine understands these settings:
   # * permit_accel => (boolean) whether the steering force should be permitted to
-  # accelerate our agent; set to false if that is undesirable.
-  # * minimum_speed => (fixnum) don't let the agent slow down below this speed
-  #
+  # accelerate our agent; set it to false if that is undesirable.
+  # * permit_decel => (boolean) whether the steering force should be permitted to
+  # decelerate our agent; set it to false if that is undesirable.
   # * *Args*    :
   #   - +character_kinematic+ -> "our" character that is moving
   #   - +steering_force+ -> force vector supplied by a steering behavior
@@ -53,17 +54,19 @@ class SteeringBehaviors::Steering
       )
     end
 
-    # Obey user options and vehicle limits
-    opts = {:permit_accel=>true}.merge(options)
+    opts = {:permit_accel=>true, :permit_decel=>true}.merge(options)
 
-    unless opts[:permit_accel]
+    # Don't permit acceleration if the caller disabled it
+    if !opts[:permit_accel]
       desired_velocity.truncate!(character_kinematic.speed)
     end
 
-    if opts[:minimum_speed] && desired_velocity.length < opts[:minimum_speed]
-      desired_velocity = desired_velocity.normalize! * opts[:minimum_speed]
+    # Don't permit deceleration if the caller disabled it
+    if !opts[:permit_decel] && desired_velocity.length < character_kinematic.speed
+      desired_velocity = desired_velocity.normalize! * character_kinematic.speed
     end
 
+    # And of course obey the character's maximum speed
     desired_velocity.truncate!(character_kinematic.max_speed)
 
     character_kinematic.velocity_vec = desired_velocity

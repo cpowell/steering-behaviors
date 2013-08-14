@@ -59,7 +59,7 @@ class AlignState < BasicGameState
     delta_s = delta / 1000.0
 
     steering_force = SteeringBehaviors::Align.steer(@hunter, @quarry)
-    SteeringBehaviors::Steering.feel_the_force(@hunter, steering_force, delta_s)
+    SteeringBehaviors::Steering.feel_the_force(@hunter, steering_force, delta_s, {:permit_decel=>false})
     @hunter.move(delta_s)
     @quarry.move(delta_s)
 

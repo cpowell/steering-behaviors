@@ -30,10 +30,9 @@ class FleeState < BasicGameState
     @game = game
     @container = container
 
-    @bug = Bug.new(MAX_X/8, MAX_Y/8, 135, 100, 1.0, 1.7854, 15, 150)
-    @bug_img = Circle.new(@bug.position_vec.x, @bug.position_vec.y, 5)
+    reset_things
 
-    randomize_target
+    @bug_img = Circle.new(@bug.position_vec.x, @bug.position_vec.y, 5)
     @tgt_img = Circle.new(@target_pos.x, @target_pos.y, 5)
 
     # Visual artifacts to illustrate what's going on...
@@ -55,15 +54,12 @@ class FleeState < BasicGameState
     delta_s = delta / 1000.0
 
     steering_force = SteeringBehaviors::Flee.steer(@bug, @target_pos)
-    SteeringBehaviors::Steering.feel_the_force(@bug, steering_force, delta_s, {:minimum_speed=>50})
+    SteeringBehaviors::Steering.feel_the_force(@bug, steering_force, delta_s, {:permit_decel=>false})
     @bug.move(delta_s)
 
     # Wrap at edges
-    if @bug.position_vec.x > MAX_X || @bug.position_vec.y > MAX_Y ||
-    @bug.position_vec.x < 0 || @bug.position_vec.y < 0
-      randomize_target
-      @bug.position_vec.x = rand(MAX_X)
-      @bug.position_vec.y = rand(MAX_Y)
+    if @bug.position_vec.x > MAX_X || @bug.position_vec.y > MAX_Y || @bug.position_vec.x < 0 || @bug.position_vec.y < 0
+      reset_things
     end
 
     # Revise the visual artifacts
@@ -73,18 +69,11 @@ class FleeState < BasicGameState
     @tgt_img.setCenterX @target_pos.x
     @tgt_img.setCenterY @target_pos.y
 
-    # @steering_circle.setCenterX @bug.position_vec.x
-    # @steering_circle.setCenterY @bug.position_vec.y
-
     @heading_line.set @bug.position_vec.x, @bug.position_vec.y, (@bug.position_vec.x + @bug.heading_vec.x * VISUAL_SCALE), (@bug.position_vec.y + @bug.heading_vec.y * VISUAL_SCALE)
 
     @steering_force_line.set @bug.position_vec.x, @bug.position_vec.y,
       (steering_force.x + @bug.position_vec.x),
       (steering_force.y + @bug.position_vec.y)
-
-    if (@target_pos.x - @bug.position_vec.x).abs < 10 && (@target_pos.y - @bug.position_vec.y).abs < 10
-      randomize_target
-    end
 
     # printf "Crs: %0.4f  Hdg: %0.4f  Spd: %0.1f\n", @bug.velocity_vec.radians, @bug.heading_vec.radians, @bug.speed
   end
@@ -97,9 +86,6 @@ class FleeState < BasicGameState
   #   - +g+ -> graphics context that can be used to render. However, normal rendering routines can also be used.
   #
   def render(container, game, g)
-    # Make sure you "layer" things in here from bottom to top...
-    # @bg_image.draw(0, 0)
-
     g.setColor(Color.white)
     g.draw_string("Fleeing (p to pause, ESC to exit)", 8, container.height - 30)
     data = sprintf("Crs %.2f\nSpd %2.0f", @bug.velocity_vec.radians, @bug.velocity_vec.length)
@@ -127,6 +113,8 @@ class FleeState < BasicGameState
   def keyReleased(key, char)
     if key==Input::KEY_ESCAPE
       @game.enterState(1, FadeOutTransition.new(Color.black), FadeInTransition.new(Color.black))
+    elsif key==Input::KEY_R
+      reset_things
     elsif key==Input::KEY_P
       if @container.isPaused
         @container.resume
@@ -136,7 +124,8 @@ class FleeState < BasicGameState
     end
   end
 
-  def randomize_target
-    @target_pos = SteeringBehaviors::Vector.new(rand(0..MAX_X), rand(0..MAX_Y))
+  def reset_things
+    @bug = Bug.new(MAX_X/2+10, MAX_Y/2, 180, 35, 5.0, 1.7854, 15, 150)
+    @target_pos = SteeringBehaviors::Vector.new(MAX_X/2, 30)
   end
 end
