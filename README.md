@@ -70,3 +70,7 @@ By the way, the examples are not DRY at all and are highly repetitive from one e
 * "Autonomous Behaviors for Autonomous Characters" by Craig Reynolds [(Explanation and demos)](http://www.red3d.com/cwr/steer/)
 * "Programming Game AI by Example" by Mat Buckland [(Amazon link)](http://www.amazon.com/Programming-Game-Example-Mat-Buckland/dp/1556220782)
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/cpowell/steering-behaviors/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
